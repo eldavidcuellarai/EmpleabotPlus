@@ -1,0 +1,786 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+    --empleabot-green: #21825C;
+    --empleabot-light-green: rgba(33, 130, 92, 0.1);
+    --empleabot-white: #FFFFFF;
+    --empleabot-gray: #4A4A4A;
+    --empleabot-light-gray: #F5F5F5;
+    --empleabot-border: #E6E6E6;
+}
+
+/* Chatbot Container */
+.chatbot-container {
+    font-family: 'Montserrat', sans-serif;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Chatbot Bubble */
+.chatbot-bubble {
+    width: 70px;
+    height: 70px;
+    background-color: var(--empleabot-green);
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(33, 130, 92, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chatbot-bubble:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(33, 130, 92, 0.5);
+}
+
+.chatbot-icon-svg {
+    width: 32px;
+    height: 32px;
+    color: var(--empleabot-white);
+}
+
+/* Chatbot Panel */
+.chatbot-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    height: 700px;
+    background-color: var(--empleabot-white);
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chatbot-panel.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+.chatbot-panel.fullscreen {
+    width: 100%;
+    height: 100vh;
+    bottom: 0;
+    right: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatbot-panel.fullscreen .chatbot-header {
+    order: 0;
+}
+
+.chatbot-panel.fullscreen .chatbot-messages {
+    order: 1;
+    flex: 1;
+}
+
+.chatbot-panel.fullscreen .empleabot-categories {
+    order: 2;
+}
+
+.chatbot-panel.fullscreen .chatbot-input {
+    order: 3;
+}
+
+/* Chatbot Header */
+.chatbot-header {
+    background-color: var(--empleabot-green);
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--empleabot-white);
+    order: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.chatbot-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    padding-left: 0.25rem;
+}
+
+.chatbot-actions {
+    display: flex;
+    gap: 10px;
+    padding-right: 0.25rem;
+}
+
+.chatbot-actions button {
+    background: none;
+    border: none;
+    color: var(--empleabot-white);
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    opacity: 0.8;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbot-actions button:hover {
+    opacity: 1;
+}
+
+/* Chatbot Messages */
+.chatbot-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 60px;
+}
+
+.chatbot-messages.expanded {
+    flex: 1;
+}
+
+.chatbot-panel.fullscreen .chatbot-messages {
+    flex: 1;
+}
+
+/* Move categories to the top in fullscreen mode */
+.chatbot-panel.fullscreen .empleabot-categories {
+    order: 1;
+    margin-top: 0;
+}
+
+/* Message Styling */
+.message {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 15px;
+    position: relative;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.message p {
+    margin: 0;
+    color: inherit;
+    margin-bottom: 4px;
+}
+
+.message p:last-child {
+    margin-bottom: 0;
+}
+
+.message.user {
+    background-color: var(--empleabot-green);
+    color: var(--empleabot-white);
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
+}
+
+.message.bot {
+    background-color: var(--empleabot-light-gray);
+    color: var(--empleabot-gray);
+    align-self: flex-start;
+    border-bottom-left-radius: 5px;
+    /* Evitar saltos de línea duplicados causados por la combinación de Markdown <br> y pre-line */
+    white-space: normal;
+}
+
+/* Markdown styling for bot messages */
+.message.bot ul, 
+.message.bot ol {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-left: 20px;
+}
+
+.message.bot li {
+    margin-bottom: 4px;
+}
+
+.message.bot a {
+    color: var(--empleabot-green);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.message.bot a:hover {
+    text-decoration: underline;
+}
+
+.message.bot code {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
+    font-size: 0.9em;
+}
+
+.message.bot pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+.message.bot pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Estilos para reducir el espaciado del contenido Markdown */
+.message.bot .markdown-content h1,
+.message.bot .markdown-content h2,
+.message.bot .markdown-content h3,
+.message.bot .markdown-content h4,
+.message.bot .markdown-content h5,
+.message.bot .markdown-content h6 {
+    margin-top: 0.6em;
+    margin-bottom: 0.3em;
+    line-height: 1.3;
+}
+
+.message.bot .markdown-content p {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+}
+
+.message.bot .markdown-content ul,
+.message.bot .markdown-content ol {
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+    padding-left: 25px;
+}
+
+.message.bot .markdown-content li {
+    margin-bottom: 0.2em;
+}
+
+.message.bot .markdown-content li p {
+    margin-bottom: 0.2em;
+}
+
+.message.bot h1, 
+.message.bot h2, 
+.message.bot h3, 
+.message.bot h4 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.message.bot h1 {
+    font-size: 1.4em;
+}
+
+.message.bot h2 {
+    font-size: 1.3em;
+}
+
+.message.bot h3 {
+    font-size: 1.2em;
+}
+
+.message.bot h4 {
+    font-size: 1.1em;
+}
+
+.message.bot p {
+    margin: 0;
+}
+
+.message.bot blockquote {
+    border-left: 3px solid var(--empleabot-green);
+    padding-left: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    color: #555;
+}
+
+/* Style for markdown separator (---) */
+.message.bot hr {
+    border: 0;
+    height: 1px;
+    background-color: rgba(33, 130, 92, 0.3);
+    margin: 15px 0;
+}
+
+/* Message content with main content and suggestions */
+.message-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.message-content .main-content {
+    margin-bottom: 6px;
+}
+
+/* Suggestions section */
+.suggestions-section {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(33, 130, 92, 0.3);
+    background-color: rgba(33, 130, 92, 0.05);
+    padding: 8px;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.suggestions-section h2,
+.suggestions-section strong,
+.suggestions-section .suggestions-title {
+    font-size: 0.95em;
+    margin-top: 6px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--empleabot-green);
+    display: block;
+}
+
+.suggestions-section ul,
+.suggestions-section p + div {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 6px;
+}
+
+.suggestions-section li,
+.suggestion-item {
+    margin-bottom: 6px;
+}
+
+.suggestions-section a {
+    display: inline-block;
+    padding: 6px 10px;
+    background-color: var(--empleabot-light-green);
+    color: var(--empleabot-green);
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(33, 130, 92, 0.2);
+    cursor: pointer;
+    line-height: 1.3;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.suggestions-section a:hover {
+    background-color: var(--empleabot-green);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions-section a:active {
+    transform: translateY(0);
+}
+
+/* Ensure proper sizing within the chatbot panel */
+.chatbot-panel .message.bot {
+    max-width: 90%;
+    box-sizing: border-box;
+}
+
+.chatbot-panel .message-content {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Ensure proper spacing and display for markdown in chatbot */
+.chatbot-panel .message.bot p:last-child {
+    margin-bottom: 0;
+}
+
+.chatbot-panel .message.bot pre {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.chatbot-panel .message.bot img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Enhance visibility of markdown elements */
+.chatbot-panel .message.bot strong,
+.chatbot-panel .message.bot b {
+    font-weight: 600;
+}
+
+.chatbot-panel .message.bot em,
+.chatbot-panel .message.bot i {
+    font-style: italic;
+    color: inherit;
+}
+
+.chatbot-panel .message.bot ul {
+    margin-left: 0;
+    padding-left: 16px;
+}
+
+/* Better visualización of the chatbot bubble in mobile */
+@media (max-width: 576px) {
+    .chatbot-panel {
+        width: calc(100% - 30px);
+        right: 15px;
+    }
+    
+    .suggestions-section a {
+        display: block;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+    
+    .message.bot {
+        max-width: 95%;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+.message.error {
+    background-color: #ffeded;
+    color: #d32f2f;
+}
+
+.message.loading {
+    background-color: var(--empleabot-light-gray);
+    color: var(--empleabot-gray);
+    align-self: flex-start;
+}
+
+.message.loading p::after {
+    content: '...';
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { content: '.'; }
+    33% { content: '..'; }
+    66% { content: '...'; }
+}
+
+.message.file {
+    background-color: var(--empleabot-light-green);
+    color: var(--empleabot-gray);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    align-self: flex-end;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+}
+
+.file-icon {
+    color: var(--empleabot-green);
+    margin-right: 10px;
+}
+
+.file-name {
+    font-weight: 500;
+}
+
+.file-size {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-left: 10px;
+}
+
+/* Empleabot Categories */
+.empleabot-categories {
+    padding: 15px;
+    border-top: 1px solid var(--empleabot-border);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    order: 2;
+    overflow-y: auto;
+    flex: 0 0 auto;
+}
+
+/* Adjust category container height in non-fullscreen mode */
+.chatbot-panel:not(.fullscreen) .empleabot-categories {
+    max-height: 70%;
+}
+
+.category-title {
+    color: var(--empleabot-gray);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.button-grid.questions-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.action-button {
+    background-color: var(--empleabot-white);
+    border: 1px solid var(--empleabot-green);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+.action-button:hover {
+    background-color: var(--empleabot-light-green);
+}
+
+.action-button i {
+    color: var(--empleabot-green);
+    margin-bottom: 10px;
+}
+
+.action-button h3 {
+    color: var(--empleabot-green);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 5px;
+}
+
+.action-button p {
+    color: var(--empleabot-gray);
+    font-size: 12px;
+    margin: 0;
+}
+
+.action-button.back-button {
+    background-color: var(--empleabot-light-gray);
+    border-color: var(--empleabot-light-gray);
+    justify-content: center;
+}
+
+.action-button.question-button {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+}
+
+.action-button.question-button i {
+    margin-right: 10px;
+    margin-bottom: 0;
+}
+
+.action-button.question-button h3 {
+    font-size: 13px;
+}
+
+/* Chatbot Input */
+.chatbot-input {
+    padding: 12px 15px;
+    border-top: 1px solid var(--empleabot-border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    order: 3;
+}
+
+.input-actions {
+    display: flex;
+    align-items: center;
+}
+
+.input-actions button {
+    background: none;
+    border: none;
+    color: var(--empleabot-gray);
+    cursor: pointer;
+    padding: 8px;
+    opacity: 0.8;
+}
+
+.input-actions button:hover {
+    opacity: 1;
+    color: var(--empleabot-green);
+}
+
+.chatbot-input input {
+    flex: 1;
+    border: 1px solid var(--empleabot-border);
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+}
+
+.chatbot-input input:focus {
+    outline: none;
+    border-color: var(--empleabot-green);
+}
+
+.chatbot-input button {
+    background-color: var(--empleabot-green);
+    color: var(--empleabot-white);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.chatbot-input button:hover {
+    transform: scale(1.05);
+}
+
+/* Hidden elements */
+.chatbot-panel:not(.active) .empleabot-categories {
+    display: none !important;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .chatbot-panel {
+        width: 300px;
+        height: 450px;
+        right: 10px;
+        bottom: 10px;
+    }
+    
+    .chatbot-panel.fullscreen {
+        width: 100%;
+        height: 100vh;
+        right: 0;
+        bottom: 0;
+    }
+    
+    .chatbot-header {
+        padding: 10px 12px;
+    }
+    
+    .chatbot-header h3 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chatbot-panel {
+        width: 100%; /* Use 100% for width */
+        height: 100%; /* Use 100% for height */
+        top: 0;    /* Anchor to top */
+        left: 0;   /* Anchor to left */
+        right: 0;  /* Ensure it spans full width */
+        bottom: 0; /* Ensure it spans full height */
+        border-radius: 0;
+        /* display: flex; flex-direction: column; is already set globally */
+        /* overflow: hidden; is already set globally */ 
+    }
+    
+    .chatbot-header {
+        padding: 8px 10px;
+    }
+}
+
+/* Override default link styling in chat bubble */
+.chatbot-panel .suggestions-section a {
+    font-weight: 500;
+    margin: 4px 0;
+    display: block;
+    text-align: left;
+    position: relative;
+    padding-left: 25px;
+}
+
+.chatbot-panel .suggestions-section a::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: var(--empleabot-green);
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.chatbot-panel .suggestions-section a:hover::before {
+    background-color: white;
+}
+
+/* Make sure the suggestion links are clearly visible */
+.chatbot-panel .suggestions-section {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background-color: rgba(33, 130, 92, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Special styling for suggestion items */
+.suggestion-item {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+/* Add a slight animation to the chat bubble when new content is added */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chatbot-panel .message.bot {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* Make code blocks more visible in the chat */
+.chatbot-panel .message.bot code {
+    background-color: rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    font-family: Consolas, Monaco, monospace;
+    padding: 2px 4px;
+    color: #3a3a3a;
+} 
