@@ -82,10 +82,11 @@ jobs:
           [ -f "styles.css" ] && echo "styles.css exists" || echo "styles.css MISSING"
           [ -f "script.js" ] && echo "script.js exists" || echo "script.js MISSING"
       
+      
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: '2Micrositio-empleabot'
+          app-name: 'empleabot'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_03EE4320901E4BE59CB5057609A1635C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A1B61CCD517D4C608D96A304B3EA1CF2 }}
