@@ -34,23 +34,53 @@ jobs:
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
+      - name: List all files before zipping
+        run: |
+          echo "Contents of repository:"
+          ls -la
+          echo "Checking important files:"
+          [ -f "index.html" ] && echo "index.html exists" || echo "index.html MISSING"
+          [ -f "styles.css" ] && echo "styles.css exists" || echo "styles.css MISSING"
+          [ -f "script.js" ] && echo "script.js exists" || echo "script.js MISSING"
+
+      - name: Zip artifact for deployment
+        run: |
+          # Excluir directorios y archivos innecesarios pero asegurar que los estáticos se incluyan
+          zip -r release.zip . -x "*.git*" "*.github*" "*__pycache__*" "*.pytest_cache*" "*venv*" "*.zip" "*.pyc"
+          echo "Created zip file:"
+          ls -lh release.zip
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
-            .
+            release.zip
             !venv/
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: python-app
+
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+
+      - name: List key files to verify they're included
+        run: |
+          echo "Checking deployment files:"
+          ls -la
+          [ -f "index.html" ] && echo "index.html exists" || echo "index.html MISSING"
+          [ -f "styles.css" ] && echo "styles.css exists" || echo "styles.css MISSING"
+          [ -f "script.js" ] && echo "script.js exists" || echo "script.js MISSING"
       
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
