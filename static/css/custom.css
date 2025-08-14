@@ -787,6 +787,16 @@ body {
     padding: 0 1.5rem 1.5rem 1.5rem;
 }
 
+#cvAccordion {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+#cvAccordion .accordion-item {
+    flex: 1;
+}
+
 .button-grid-wrapper .accordion {
     margin-bottom: 0;
 }

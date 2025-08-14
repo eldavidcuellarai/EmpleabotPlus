@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded - initializing chat...');
     feather.replace();
 
     const chatForm = document.getElementById('chatForm');
@@ -6,155 +7,74 @@ document.addEventListener('DOMContentLoaded', function() {
     const messageInput = document.getElementById('messageInput');
     const fileInput = document.getElementById('pdfFile');
     const sendBtn = document.getElementById('sendBtn');
-    const buttonGrid = document.getElementById('buttonGrid');
-    const categoryTitle = document.getElementById('categoryTitle');
     const messageInputContainer = document.querySelector('.message-input-container');
+
+    // Verificar que todos los elementos existen
+    if (!messageInput || !chatForm) {
+        console.error('Required elements not found:', {
+            messageInput: !!messageInput,
+            chatForm: !!chatForm
+        });
+        return;
+    }
+
+    console.log('All required elements found, setting up event listeners...');
 
     marked.setOptions({
         breaks: true,
         gfm: true
     });
 
-    // Questions for each category with icons
-    const categoryQuestions = {
-        'Revisión General': [
-            {text: '¿Qué errores comunes debo evitar en mi CV?', icon: 'alert-triangle'},
-            {text: '¿Puedes revisar mi CV y decirme qué debería mejorar?', icon: 'search'},
-            {text: 'Necesito actualizar mi CV después de 5 años', icon: 'refresh-cw'},
-            {text: '¿Cómo reducir mi CV a una página sin perder impacto?', icon: 'minimize-2'},
-            {text: '¿Dónde coloco mis nuevos cursos y certificaciones en el CV?', icon: 'award'}
-        ],
-        'Adaptación por Perfil': [
-            {text: '¿Cómo enfoco mi CV para conseguir trabajo en tecnología?', icon: 'code'},
-            {text: '¿Cómo ajustar mi CV para diferentes roles?', icon: 'shuffle'},
-            {text: 'Adaptar CV al sector tecnológico', icon: 'cpu'},
-            {text: 'Quiero cambiar de sector, ¿cómo adapto mi experiencia?', icon: 'refresh-ccw'}
-        ],
-        'Primeros Empleos': [
-            {text: '¿Qué pongo en mi CV si no tengo experiencia profesional?', icon: 'file-plus'},
-            {text: '¿Cómo destacar prácticas universitarias en mi primer CV?', icon: 'book'},
-            {text: '¿Cómo puedo usar mis proyectos de la universidad como experiencia laboral?', icon: 'folder'},
-            {text: 'Tengo experiencia como voluntario, ¿cómo la incluyo en mi CV?', icon: 'heart'},
-            {text: '¿Cómo incluyo mis trabajos informales en un CV profesional?', icon: 'briefcase'},
-            {text: 'Aprendí programación/diseño por mi cuenta, ¿cómo lo muestro en mi CV?', icon: 'code'}
-        ],
-        'Habilidades y Competencias': [
-            {text: '¿Qué habilidades blandas debo incluir en mi CV?', icon: 'users'},
-            {text: '¿Cómo demostrar habilidades de liderazgo en mi CV?', icon: 'star'},
-            {text: '¿Cómo equilibrar habilidades técnicas y blandas en mi CV?', icon: 'git-merge'},
-            {text: '¿Cómo redactar un resumen profesional impactante?', icon: 'edit'},
-            {text: '¿Cómo presentar certificaciones y formación para maximizar su impacto?', icon: 'award'}
-        ]
-    };
-
-    // Icons for each category
-    const categoryIcons = {
-        'Revisión General': 'refresh-cw',
-        'Adaptación por Perfil': 'target',
-        'Primeros Empleos': 'briefcase',
-        'Habilidades y Competencias': 'star'
-    };
-
-    function showCategoryQuestions(category) {
-        // Update category title
-        categoryTitle.querySelector('.section-title').textContent = category;
-
-        // Clear existing buttons and add questions-grid class
-        buttonGrid.innerHTML = '';
-        buttonGrid.classList.add('questions-grid');
-
-        // Add back button
-        const backButton = document.createElement('div');
-        backButton.className = 'action-button back-button';
-        backButton.innerHTML = '<h3>← Volver</h3>';
-        backButton.addEventListener('click', showMainCategories);
-        buttonGrid.appendChild(backButton);
-
-        // Add question buttons
-        categoryQuestions[category].forEach(question => {
-            const questionButton = document.createElement('div');
-            questionButton.className = 'action-button question-button';
-            questionButton.innerHTML = `
-                <i data-feather="${question.icon}" class="question-icon"></i>
-                <h3>${question.text}</h3>
-            `;
-            questionButton.addEventListener('click', () => {
-                messageInput.value = question.text;
-                messageInput.focus();
-                showMainCategories();
-            });
-            buttonGrid.appendChild(questionButton);
-        });
-
-        // Initialize Feather icons for the new buttons
-        feather.replace();
-    }
-
-    function showMainCategories() {
-        // Update title to default
-        categoryTitle.querySelector('.section-title').textContent = 'Comparte tu CV y selecciona el área que quieres mejorar';
-
-        // Remove questions grid class
-        buttonGrid.classList.remove('questions-grid');
-
-        // Clear and restore main category buttons
-        buttonGrid.innerHTML = Object.entries(categoryQuestions).map(([category, questions]) => {
-            const items = questions.slice(0, 4).map(q => `
-                <li class="faq-item" data-question="${q.text.replace(/&/g,'&amp;').replace(/\"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}">
-                    <i data-feather="${q.icon}" class="faq-icon"></i>
-                    <span>${q.text}</span>
-                </li>
-            `).join('');
-            return `
-            <div class="action-button">
-                <i data-feather="${categoryIcons[category]}" class="category-icon"></i>
-                <h3>${category}</h3>
-                <p>${getCategoryDescription(category)}</p>
-                <ul class="faq-list">${items}</ul>
-            </div>`;
-        }).join('');
-
-        // Initialize icons
-        feather.replace();
-
-        // Attach category click handlers
-        document.querySelectorAll('.action-button').forEach(button => {
-            if (!button.classList.contains('back-button') && !button.classList.contains('question-button')) {
-                button.addEventListener('click', function() {
-                    const category = this.querySelector('h3').textContent;
-                    showCategoryQuestions(category);
-                });
-            }
-        });
-
-        // Attach FAQ chip click handlers (prefill message without leaving main view)
-        document.querySelectorAll('.faq-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.stopPropagation(); // prevent triggering the parent card click
-                const text = item.getAttribute('data-question');
-                messageInput.value = text;
-                messageInput.focus();
+    // Add event listeners to existing suggested question buttons
+    function setupSuggestedQuestions() {
+        const suggestedButtons = document.querySelectorAll('.suggested-question');
+        console.log('Found suggested question buttons:', suggestedButtons.length);
+        
+        suggestedButtons.forEach((button, index) => {
+            console.log(`Setting up button ${index}:`, button.textContent);
+            
+            // Remove any existing event listeners first
+            button.replaceWith(button.cloneNode(true));
+            const newButton = document.querySelectorAll('.suggested-question')[index];
+            
+            newButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const questionText = this.textContent.trim();
+                console.log('Suggested question clicked:', questionText);
+                
+                if (questionText && messageInput) {
+                    messageInput.value = questionText;
+                    messageInput.focus();
+                    
+                    // Optional: scroll to the chat input
+                    messageInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Visual feedback
+                    this.style.backgroundColor = 'var(--empleabot-green)';
+                    this.style.color = 'white';
+                    setTimeout(() => {
+                        this.style.backgroundColor = '';
+                        this.style.color = '';
+                    }, 500);
+                } else {
+                    console.error('MessageInput not found or questionText is empty:', {
+                        questionText,
+                        messageInput: !!messageInput
+                    });
+                }
             });
         });
     }
 
-    function getCategoryDescription(category) {
-        switch(category) {
-            case 'Revisión General':
-                return 'Actualizar, mejorar, optimizar';
-            case 'Adaptación por Perfil':
-                return 'Cambio de sector, roles específicos';
-            case 'Primeros Empleos':
-                return 'Sin experiencia, recién graduados';
-            case 'Habilidades y Competencias':
-                return 'Destacar capacidades clave';
-            default:
-                return '';
-        }
-    }
+    // Initialize suggested questions
+    setupSuggestedQuestions();
 
-    // Initialize the main categories view
-    showMainCategories();
+    // Re-setup when accordion content is shown (in case buttons are in collapsed sections)
+    document.addEventListener('shown.bs.collapse', function() {
+        console.log('Accordion opened, re-setting up suggested questions...');
+        setupSuggestedQuestions();
+    });
 
     // Handle file input change
     fileInput.addEventListener('change', function() {
@@ -198,10 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (message) {
                 addMessage(message, 'user');
                 scrollToBottom();
-            }
-
-            if (buttonGrid && !buttonGrid.classList.contains('hidden')) {
-                buttonGrid.classList.add('hidden');
             }
 
             sendBtn.disabled = true;
