@@ -1,4 +1,7 @@
 # Archivos de entorno
+# Entornos virtuales
+.venv/
+*.env/
 .env
 
 # Archivos de Python
@@ -27,6 +30,7 @@ var/
 venv/
 ENV/
 antenv/
+
 
 # Archivos temporales
 /tmp/
