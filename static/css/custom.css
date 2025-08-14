@@ -14,6 +14,36 @@ body {
     min-height: 100vh;
 }
 
+/* Sticky top chat bar */
+.top-chat-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-bottom: 1px solid rgba(33,130,92,0.1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.top-chat-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+}
+
+.top-chat-bar .message-input-container {
+    margin-top: 0;
+}
+
+@media (max-width: 576px) {
+    .top-chat-inner {
+        padding: 0.5rem 0.75rem;
+    }
+    .btn-send {
+        width: 44px;
+        height: 44px;
+    }
+}
+
 .logo {
     color: var(--brand-green);
     font-size: 3rem;
