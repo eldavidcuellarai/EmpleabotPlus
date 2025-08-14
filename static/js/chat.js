@@ -98,13 +98,21 @@ document.addEventListener('DOMContentLoaded', function() {
         buttonGrid.classList.remove('questions-grid');
 
         // Clear and restore main category buttons
-        buttonGrid.innerHTML = Object.entries(categoryQuestions).map(([category, _]) => `
+        buttonGrid.innerHTML = Object.entries(categoryQuestions).map(([category, questions]) => {
+            const items = questions.slice(0, 4).map(q => `
+                <li class="faq-item" data-question="${q.text.replace(/&/g,'&amp;').replace(/\"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}">
+                    <i data-feather="${q.icon}" class="faq-icon"></i>
+                    <span>${q.text}</span>
+                </li>
+            `).join('');
+            return `
             <div class="action-button">
                 <i data-feather="${categoryIcons[category]}" class="category-icon"></i>
                 <h3>${category}</h3>
                 <p>${getCategoryDescription(category)}</p>
-            </div>
-        `).join('');
+                <ul class="faq-list">${items}</ul>
+            </div>`;
+        }).join('');
 
         // Initialize icons
         feather.replace();
@@ -117,6 +125,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     showCategoryQuestions(category);
                 });
             }
+        });
+
+        // Attach FAQ chip click handlers (prefill message without leaving main view)
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation(); // prevent triggering the parent card click
+                const text = item.getAttribute('data-question');
+                messageInput.value = text;
+                messageInput.focus();
+            });
         });
     }
 

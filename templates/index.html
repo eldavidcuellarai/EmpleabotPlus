@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Gen<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
@@ -13,22 +13,7 @@
     <link href="{{ url_for('static', filename='css/chat-bubble.css') }}" rel="stylesheet">
  </head>
  <body>
-    <header class="top-chat-bar">
-        <div class="top-chat-inner">
-            <form id="chatForm" class="d-flex gap-3 align-items-center">
-                <div class="message-input-container flex-grow-1 d-flex align-items-center">
-                    <label for="pdfFile" class="file-upload-label me-2">
-                        <i data-feather="paperclip"></i>
-                        <input type="file" class="form-control d-none" id="pdfFile" accept=".pdf">
-                    </label>
-                    <input type="text" class="form-control border-0" id="messageInput" placeholder="Escribe tu mensaje..." required>
-                </div>
-                <button class="btn btn-send" type="submit" id="sendBtn">
-                    <i data-feather="send"></i>
-                </button>
-            </form>
-        </div>
-    </header>
+    
 
     <main class="container min-vh-100 d-flex flex-column py-4">
         <section class="text-center mb-4">
@@ -75,6 +60,19 @@
 
                 <div class="chat-container">
                     <div id="chatMessages" class="chat-messages mb-4"></div>
+                    <!-- Moved input bar into the chat container so it appears below inside the responses box -->
+                    <form id="chatForm" class="d-flex gap-3 align-items-center">
+                        <div class="message-input-container flex-grow-1 d-flex align-items-center">
+                            <label for="pdfFile" class="file-upload-label me-2">
+                                <i data-feather="paperclip"></i>
+                                <input type="file" class="form-control d-none" id="pdfFile" accept=".pdf">
+                            </label>
+                            <input type="text" class="form-control border-0" id="messageInput" placeholder="Escribe tu mensaje..." required>
+                        </div>
+                        <button class="btn btn-send" type="submit" id="sendBtn">
+                            <i data-feather="send"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
