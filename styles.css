@@ -331,7 +331,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px; /* Reduced from 20px to 15px */
+    gap: 12px; /* Further reduced from 15px for more compact design */
 }
 
 /* Adjust search container for hero section */
@@ -696,18 +696,18 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 30px auto; /* Reduced from 40px */
+    margin: 20px auto; /* Further reduced from 30px */
     position: relative;
-    max-width: 700px; /* Reduced width to accommodate 3 cards */
+    max-width: 650px; /* Slightly reduced width for more compact design */
 }
 
 .faq-slider {
     display: flex;
-    gap: 20px; /* Increased gap for better spacing with 3 cards */
+    gap: 15px; /* Slightly reduced gap for more compact spacing */
     width: 100%;
     overflow-x: hidden;
     scroll-behavior: smooth;
-    padding: 15px 10px; /* Reduced from 20px */
+    padding: 10px 8px; /* Further reduced padding */
     transition: transform 0.3s ease; /* Add transition for smooth sliding */
 }
 
@@ -715,9 +715,9 @@ h1, h2, h3, h4, h5, h6 {
     min-width: calc(33.333% - 15px); /* Changed to show exactly 3 cards */
     flex: 0 0 calc(33.333% - 15px); /* Fixed width for 3 cards */
     background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 16px;
-    padding: 14px 10px; /* Further reduced padding for smaller height */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 12px; /* Slightly smaller border radius */
+    padding: 10px 8px; /* Even more reduced padding for smaller height */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); /* Reduced shadow */
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     cursor: pointer;
@@ -737,22 +737,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .faq-icon {
-    width: 36px; /* Smaller icon - reduced from 40px */
-    height: 36px; /* Smaller icon - reduced from 40px */
+    width: 28px; /* Smaller icon - reduced from 36px */
+    height: 28px; /* Smaller icon - reduced from 36px */
     border-radius: 50%;
     background-color: rgba(16, 185, 129, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 6px; /* Further reduced margin from 8px */
+    margin: 0 auto 4px; /* Further reduced margin from 6px */
     color: var(--secondary-color);
 }
 
+.faq-icon svg {
+    width: 16px; /* Smaller svg icon size */
+    height: 16px; /* Smaller svg icon size */
+}
+
 .faq-card h3 {
-    font-size: 0.9rem; /* Slightly smaller font size from 0.95rem */
+    font-size: 0.8rem; /* Smaller font size for more compact look */
     margin-bottom: 0; /* Remove bottom margin since we removed description */
     color: var(--primary-color);
-    line-height: 1.2; /* Tighter line height */
+    line-height: 1.1; /* Even tighter line height */
+    font-weight: 600; /* Slightly bolder to maintain readability */
 }
 
 .faq-card p {

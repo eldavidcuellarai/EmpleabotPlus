@@ -1,138 +1,187 @@
-# Landing Page - Habilidades Digitales para el Ámbito Laboral
+# Empleabot Plus
 
-Una landing page con diseño moderno y un chatbot integrado en forma de burbuja, desarrollada con HTML, CSS y JavaScript puro.
+**A modern landing page with a built-in chatbot bubble, developed with HTML, CSS, and vanilla JavaScript.**
 
-## Características
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fyour-username%2Fyour-repo-name%2Fmain%2Fazure-deploy.json)
 
-- Diseño responsivo para todos los dispositivos
-- Chatbot en forma de burbuja que se expande al hacer clic
-- Animaciones y transiciones suaves
-- Preguntas frecuentes con interactividad
-- Secciones destacadas con tarjetas informativas
-- Soporte para íconos a través de Feather Icons
+---
 
-## Estructura del Proyecto
+## Table of Contents
 
-```
-├── index.html       # Estructura HTML principal
-├── styles.css       # Estilos CSS
-├── script.js        # Funcionalidad JavaScript
-└── attached_assets/ # Imágenes y logotipos
-    ├── logo1.png
-    ├── logo2.png
-    ├── Logo 3.png
-    └── robotsite.png
-```
+- [About the Project](#about-the-project)
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Deployment](#deployment)
+- [Customization](#customization)
+  - [Colors and Theme](#colors-and-theme)
+  - [Chatbot](#chatbot)
+  - [Logos and Images](#logos-and-images)
+- [Chatbot Functionality](#chatbot-functionality)
+- [React Integration](#react-integration)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-## Instalación y ejecución local
+---
 
-1. **Clona el repositorio**
+## About the Project
 
-```bash
-git clone <url-del-repositorio>
-cd <nombre-carpeta>
-```
+This project is a modern and responsive landing page for "Digital Skills for the Workplace." It features a clean design and a chatbot bubble that expands on click, providing an interactive user experience.
 
-2. Crea un archivo `.env` (opcional)
+## Features
 
-Si quieres respuestas reales desde Azure OpenAI, agrega:
+- **Responsive Design:** Looks great on all devices.
+- **Chatbot Bubble:** Expands on click to reveal a chat interface.
+- **Smooth Animations:** CSS transitions and animations for a polished feel.
+- **Interactive FAQ:** Accordion-style frequently asked questions.
+- **Featured Sections:** Information cards to highlight key content.
+- **Icon Support:** Uses Feather Icons for a clean and modern look.
 
-```
-SESSION_SECRET=dev_secret_change_me
-LOCAL_DEV=true
-AZURE_OPENAI_KEY=...
-AZURE_OPENAI_ENDPOINT=...
-AZURE_OPENAI_ASSISTANT_ID=...
-```
+## Getting Started
 
-3. Instala dependencias y ejecuta el servidor Flask
+To get a local copy up and running, follow these simple steps.
 
-```
-python -m venv .venv
-.venv\Scripts\activate  # Windows
-pip install -r requirements.txt
-python application.py
-```
+### Prerequisites
 
-El sitio estará en `http://localhost:5000`.
+- A modern web browser (Chrome, Firefox, Safari, etc.)
+- A code editor (VS Code, Sublime Text, etc.)
+- [Git](https://git-scm.com/)
+- [Python](https://www.python.org/)
 
-## Despliegue
+### Installation
 
-Esta es una aplicación estática que puede desplegarse en cualquier servidor web:
+1. **Clone the repo**
+   ```sh
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
+   ```
 
-- Copia todos los archivos al directorio raíz de tu servidor web
-- Para Azure App Service, sigue estos pasos:
-  - Comprime todos los archivos en un archivo ZIP
-  - En Azure Portal, ve a tu App Service
-  - Selecciona "Deployment Center" > "External" > "Importar archivo ZIP"
-  - Sube el archivo ZIP
+2. **Create a virtual environment**
+   ```sh
+   python -m venv .venv
+   ```
 
-## Personalización
+3. **Activate the virtual environment**
+   - **Windows**
+     ```sh
+     .venv\Scripts\activate
+     ```
+   - **macOS/Linux**
+     ```sh
+     source .venv/bin/activate
+     ```
 
-### Colores y Tema
+4. **Install dependencies**
+   ```sh
+   pip install -r requirements.txt
+   ```
 
-Puedes modificar los colores y variables principales editando las variables CSS en la parte superior del archivo `styles.css`:
+5. **Run the Flask server**
+   ```sh
+   python application.py
+   ```
+
+The site will be available at `http://localhost:5000`.
+
+## Usage
+
+Once the server is running, you can open the `index.html` file in your browser to see the landing page. The chatbot can be customized to answer specific questions by modifying the `script.js` file.
+
+## Deployment
+
+This is a static application that can be deployed to any web server. Here are a few options:
+
+- **GitHub Pages:** Deploy a static site for free.
+- **Netlify:** A popular choice for deploying static sites.
+- **Vercel:** Another great option for deploying static sites.
+- **Azure App Service:**
+  1. Zip all the files in the project.
+  2. In the Azure Portal, go to your App Service.
+  3. Select "Deployment Center" > "External" > "Import ZIP file".
+  4. Upload the ZIP file.
+
+## Customization
+
+### Colors and Theme
+
+You can easily change the color scheme by editing the CSS variables at the top of the `styles.css` file:
 
 ```css
 :root {
     --primary-color: #07403F;
     --secondary-color: #00B19A;
     --highlight-color: #00B19A;
-    /* otras variables */
+    /* other variables */
 }
 ```
 
 ### Chatbot
 
-Para personalizar el chatbot:
-- Modifica las respuestas predefinidas en `script.js`
-- Cambia la imagen del avatar en la clase `.chatbot-bubble` en HTML
-- Ajusta el estilo del chatbot modificando las clases correspondientes en CSS
+To customize the chatbot:
 
-### Logotipos e Imágenes
+- **Modify the predefined responses** in the `script.js` file.
+- **Change the avatar image** in the `.chatbot-bubble` class in the HTML.
+- **Adjust the chatbot's style** by modifying the corresponding classes in the CSS.
 
-Reemplaza los archivos en la carpeta `attached_assets` manteniendo los nombres de archivo originales, o actualiza las rutas en el HTML.
+### Logos and Images
 
-## Funcionalidades del Chatbot
+Replace the files in the `attached_assets` folder with your own, keeping the original file names, or update the paths in the HTML.
 
-El chatbot implementado es una simulación simple que responde a palabras clave específicas:
+## Chatbot Functionality
 
-1. Preguntas sobre CV o currículum
-2. Consejos para entrevistas
-3. Información sobre cursos recomendados
-4. Información sobre Inteligencia Artificial
+The chatbot is a simple simulation that responds to specific keywords:
 
-Para integrar un chatbot real, modifica la función `getBotResponse()` en `script.js` para conectarte a una API externa.
+1. Questions about CVs or resumes
+2. Interview tips
+3. Information about recommended courses
+4. Information about Artificial Intelligence
 
-## Integración con React
+To integrate a real chatbot, modify the `getBotResponse()` function in `script.js` to connect to an external API.
 
-Para convertir este proyecto a React:
+## React Integration
 
-1. Crea un nuevo proyecto React:
-```bash
-npx create-react-app empleabot-landing
-cd empleabot-landing
-```
+To convert this project to React:
 
-2. Instala las dependencias necesarias:
-```bash
-npm install react-feather
-```
+1. **Create a new React project**
+   ```sh
+   npx create-react-app empleabot-landing
+   cd empleabot-landing
+   ```
 
-3. Estructura los componentes:
-   - Header
-   - Hero
-   - Features
-   - Questions
-   - Footer
-   - ChatBot
+2. **Install the necessary dependencies**
+   ```sh
+   npm install react-feather
+   ```
 
-4. Convierte los estilos CSS a módulos CSS o utiliza styled-components.
+3. **Structure the components**
+   - `Header`
+   - `Hero`
+   - `Features`
+   - `Questions`
+   - `Footer`
+   - `ChatBot`
 
-## Soporte
+4. **Convert the CSS to CSS modules or use styled-components.**
 
-Para preguntas o problemas, por favor abre un issue en el repositorio o contacta al equipo de desarrollo.
+## Contributing
 
-## Licencia
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-[MIT](LICENSE) 
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Contact
+
+Your Name - [@your_twitter](https://twitter.com/your_twitter) - email@example.com
+
+Project Link: [https://github.com/your-username/your-repo-name](https://github.com/your-username/your-repo-name)
