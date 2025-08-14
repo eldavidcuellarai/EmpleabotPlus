@@ -1,25 +1,61 @@
 import os
 import logging
+import json
+from pathlib import Path
 from flask import Flask, render_template, request, jsonify, session
 from werkzeug.utils import secure_filename
 from openai import AzureOpenAI
 from utils.pdf_processor import extract_text_from_pdf
+from dotenv import load_dotenv
+
+# Load .env next to this file (robust on Windows)
+dotenv_path = Path(__file__).resolve().parent / ".env"
+load_dotenv(dotenv_path=dotenv_path, override=False)
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET")
+app.secret_key = os.environ.get("SESSION_SECRET", "dev_secret_change_me")
 
-# OpenAI client configuration
-client = AzureOpenAI(
-    api_key=os.environ.get("AZURE_OPENAI_KEY"),
-    azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"),
-    api_version="2024-02-15-preview"  # Azure OpenAI API version
+# OpenAI client configuration with local-dev fallback
+def first_nonempty(*values):
+    for v in values:
+        if v and str(v).strip():
+            return str(v).strip()
+    return ""
+
+AZURE_OPENAI_KEY = first_nonempty(
+    os.environ.get("AZURE_OPENAI_KEY"),
+    os.environ.get("AZURE_OPENAI_API_KEY"),
+    os.environ.get("OPENAI_API_KEY"),
 )
+AZURE_OPENAI_ENDPOINT = first_nonempty(
+    os.environ.get("AZURE_OPENAI_ENDPOINT"),
+    os.environ.get("OPENAI_API_BASE"),
+)
+AZURE_OPENAI_ASSISTANT_ID = first_nonempty(
+    os.environ.get("AZURE_OPENAI_ASSISTANT_ID"),
+)
+LOCAL_DEV = (os.environ.get("LOCAL_DEV", "true") or "").lower().strip() in {"1", "true", "yes"}
 
-UPLOAD_FOLDER = '/tmp/uploads'
+client = None
+if AZURE_OPENAI_KEY and AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_ASSISTANT_ID:
+    client = AzureOpenAI(
+        api_key=AZURE_OPENAI_KEY,
+        azure_endpoint=AZURE_OPENAI_ENDPOINT,
+        api_version="2024-02-15-preview"
+    )
+    LOCAL_DEV = False
+else:
+    logger.warning("Running in LOCAL_DEV mode: Azure OpenAI env vars not fully configured. Responses will be simulated.")
+    logger.info(
+        "Azure config present? key=%s endpoint=%s assistant_id=%s",
+        bool(AZURE_OPENAI_KEY), bool(AZURE_OPENAI_ENDPOINT), bool(AZURE_OPENAI_ASSISTANT_ID)
+    )
+
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 ALLOWED_EXTENSIONS = {'pdf'}
 
 if not os.path.exists(UPLOAD_FOLDER):
@@ -67,6 +103,39 @@ def chat():
         elif not user_message:
             return jsonify({'error': 'No message provided'}), 400
 
+        if LOCAL_DEV:
+            # Simple inline HTML for artifact preview
+            sample_html = (
+                "<!doctype html><html><head><meta charset='utf-8'><title>CV</title>"
+                "<style>body{font-family:Arial;margin:24px;}h1{color:#21825C;margin:0;}"
+                "h2{margin:8px 0 0;} .section{margin-top:14px;} .item{margin:6px 0;}</style>"
+                "</head><body>"
+                f"<h1>Nombre Apellido</h1><p>Resumen profesional breve. PDF extraído: {bool(pdf_content)}</p>"
+                "<div class='section'><h2>Experiencia</h2><div class='item'><strong>Rol</strong> — Empresa (2022-2024)</div></div>"
+                "<div class='section'><h2>Educación</h2><div class='item'>Licenciatura — Universidad</div></div>"
+                "<div class='section'><h2>Habilidades</h2><div class='item'>Python, Excel, Comunicación</div></div>"
+                "</body></html>"
+            )
+            artifacts_block = (
+                "---ARTIFACTS-START---\n" 
+                + json.dumps({
+                    "artifacts": [
+                        {"id": "cv-general", "type": "html", "title": "CV optimizado (General)", "content": sample_html}
+                    ]
+                }) 
+                + "\n---ARTIFACTS-END---"
+            )
+            simulated = (
+                "Gracias por tu mensaje. Estoy en modo local.\n\n"
+                "Debajo encontrarás un artifact con un CV de ejemplo.\n\n"
+                + artifacts_block +
+                "\n\n---\n**Sugerencias:**\n"
+                "- [¿Cómo mejorar mi CV?](acción:mejorar-cv)\n"
+                "- [¿Consejos para entrevistas?](acción:entrevistas)\n"
+                "- [¿Cursos recomendados?](acción:cursos)\n"
+            )
+            return jsonify({'response': simulated})
+
         # Get or create thread
         thread_id = get_or_create_thread()
 
@@ -80,7 +149,7 @@ def chat():
         # Run the assistant using the provided Assistant ID
         run = client.beta.threads.runs.create(
             thread_id=thread_id,
-            assistant_id=os.environ.get("AZURE_OPENAI_ASSISTANT_ID")
+            assistant_id=AZURE_OPENAI_ASSISTANT_ID
         )
 
         # Wait for the run to complete
@@ -106,4 +175,17 @@ def chat():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
+
+@app.route('/health')
+def health():
+    try:
+        return jsonify({
+            'status': 'ok',
+            'local_dev': LOCAL_DEV,
+            'azure_configured': bool(AZURE_OPENAI_KEY and AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_ASSISTANT_ID),
+            'uploads_dir': app.config.get('UPLOAD_FOLDER'),
+        })
+    except Exception as e:
+        logger.error(f"Health check error: {e}")
+        return jsonify({'status': 'error', 'detail': str(e)}), 500

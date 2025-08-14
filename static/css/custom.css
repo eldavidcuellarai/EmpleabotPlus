@@ -302,6 +302,26 @@ body {
     height: 20px;
 }
 
+/* Subtle, consistent scrollbars for chat area */
+.chat-messages::-webkit-scrollbar {
+	    width: 10px;
+	}
+
+.chat-messages::-webkit-scrollbar-track {
+	    background: transparent;
+	}
+
+.chat-messages::-webkit-scrollbar-thumb {
+	    background-color: rgba(33, 130, 92, 0.35);
+	    border-radius: 8px;
+	    border: 2px solid transparent;
+	    background-clip: content-box;
+	}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+	    background-color: rgba(33, 130, 92, 0.55);
+	}
+
 [data-bs-theme=dark] {
     --bs-body-color: var(--button-text);
     --bs-body-bg: #FFFFFF;

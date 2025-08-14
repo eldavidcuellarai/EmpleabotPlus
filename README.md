@@ -24,7 +24,7 @@ Una landing page con diseño moderno y un chatbot integrado en forma de burbuja,
     └── robotsite.png
 ```
 
-## Instalación y Despliegue
+## Instalación y ejecución local
 
 1. **Clona el repositorio**
 
@@ -33,19 +33,30 @@ git clone <url-del-repositorio>
 cd <nombre-carpeta>
 ```
 
-2. **Para desarrollo local**
+2. Crea un archivo `.env` (opcional)
 
-Simplemente abre el archivo `index.html` en tu navegador o utiliza un servidor local:
+Si quieres respuestas reales desde Azure OpenAI, agrega:
 
-```bash
-# Usando Python
-python -m http.server
-
-# O con npm
-npx serve
+```
+SESSION_SECRET=dev_secret_change_me
+LOCAL_DEV=true
+AZURE_OPENAI_KEY=...
+AZURE_OPENAI_ENDPOINT=...
+AZURE_OPENAI_ASSISTANT_ID=...
 ```
 
-3. **Para despliegue en producción**
+3. Instala dependencias y ejecuta el servidor Flask
+
+```
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+python application.py
+```
+
+El sitio estará en `http://localhost:5000`.
+
+## Despliegue
 
 Esta es una aplicación estática que puede desplegarse en cualquier servidor web:
 
