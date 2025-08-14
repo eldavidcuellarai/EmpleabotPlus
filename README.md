@@ -1,187 +1,66 @@
 # Empleabot Plus
 
-**A modern landing page with a built-in chatbot bubble, developed with HTML, CSS, and vanilla JavaScript.**
-
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fyour-username%2Fyour-repo-name%2Fmain%2Fazure-deploy.json)
+**Una página de aterrizaje moderna con un chatbot integrado, desarrollada con HTML, CSS y JavaScript puro.**
 
 ---
 
-## Table of Contents
+## Contenido
 
-- [About the Project](#about-the-project)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Deployment](#deployment)
-- [Customization](#customization)
-  - [Colors and Theme](#colors-and-theme)
-  - [Chatbot](#chatbot)
-  - [Logos and Images](#logos-and-images)
-- [Chatbot Functionality](#chatbot-functionality)
-- [React Integration](#react-integration)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+- [Acerca del Proyecto](#acerca-del-proyecto)
+- [Características](#caracteristicas)
+- [Cómo Empezar](#como-empezar)
+- [Uso](#uso)
+- [Despliegue](#despliegue)
+- [Personalización](#personalizacion)
+- [Funcionalidad del Chatbot](#funcionalidad-del-chatbot)
+- [Contribuciones](#contribuciones)
+- [Licencia](#licencia)
+- [Contacto](#contacto)
 
 ---
 
-## About the Project
+## Acerca del Proyecto
 
-This project is a modern and responsive landing page for "Digital Skills for the Workplace." It features a clean design and a chatbot bubble that expands on click, providing an interactive user experience.
+Empleabot Plus es una página web diseñada para facilitar la interacción con los usuarios mediante un chatbot integrado. La página es moderna, responsiva y fácil de usar, ideal para mostrar información y responder preguntas de manera automática.
 
-## Features
+## Características
 
-- **Responsive Design:** Looks great on all devices.
-- **Chatbot Bubble:** Expands on click to reveal a chat interface.
-- **Smooth Animations:** CSS transitions and animations for a polished feel.
-- **Interactive FAQ:** Accordion-style frequently asked questions.
-- **Featured Sections:** Information cards to highlight key content.
-- **Icon Support:** Uses Feather Icons for a clean and modern look.
+- Diseño responsivo que se adapta a cualquier dispositivo.
+- Chatbot integrado que se activa al hacer clic.
+- Animaciones suaves para una mejor experiencia visual.
+- Secciones destacadas para mostrar información importante.
+- Preguntas frecuentes interactivas para resolver dudas comunes.
 
-## Getting Started
+## Cómo Empezar
 
-To get a local copy up and running, follow these simple steps.
+1. Clona este repositorio.
+2. Instala las dependencias necesarias.
+3. Ejecuta la aplicación localmente para probarla.
 
-### Prerequisites
+## Uso
 
-- A modern web browser (Chrome, Firefox, Safari, etc.)
-- A code editor (VS Code, Sublime Text, etc.)
-- [Git](https://git-scm.com/)
-- [Python](https://www.python.org/)
+Simplemente abre la página en un navegador y haz clic en el chatbot para comenzar a interactuar.
 
-### Installation
+## Despliegue
 
-1. **Clone the repo**
-   ```sh
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
-   ```
+Puedes desplegar esta página en cualquier servidor web o plataforma en la nube que soporte archivos estáticos.
 
-2. **Create a virtual environment**
-   ```sh
-   python -m venv .venv
-   ```
+## Personalización
 
-3. **Activate the virtual environment**
-   - **Windows**
-     ```sh
-     .venv\Scripts\activate
-     ```
-   - **macOS/Linux**
-     ```sh
-     source .venv/bin/activate
-     ```
+Puedes cambiar colores, imágenes y textos para adaptar la página a tus necesidades.
 
-4. **Install dependencies**
-   ```sh
-   pip install -r requirements.txt
-   ```
+## Funcionalidad del Chatbot
 
-5. **Run the Flask server**
-   ```sh
-   python application.py
-   ```
+El chatbot está diseñado para responder preguntas frecuentes y ayudar a los usuarios de forma automática, mejorando la experiencia de navegación.
 
-The site will be available at `http://localhost:5000`.
+## Contribuciones
 
-## Usage
+Las contribuciones son bienvenidas. Por favor, abre un issue o un pull request para mejorar el proyecto.
 
-Once the server is running, you can open the `index.html` file in your browser to see the landing page. The chatbot can be customized to answer specific questions by modifying the `script.js` file.
+## Licencia
 
-## Deployment
+Este proyecto está bajo la licencia MIT.
 
-This is a static application that can be deployed to any web server. Here are a few options:
+## Contacto
 
-- **GitHub Pages:** Deploy a static site for free.
-- **Netlify:** A popular choice for deploying static sites.
-- **Vercel:** Another great option for deploying static sites.
-- **Azure App Service:**
-  1. Zip all the files in the project.
-  2. In the Azure Portal, go to your App Service.
-  3. Select "Deployment Center" > "External" > "Import ZIP file".
-  4. Upload the ZIP file.
-
-## Customization
-
-### Colors and Theme
-
-You can easily change the color scheme by editing the CSS variables at the top of the `styles.css` file:
-
-```css
-:root {
-    --primary-color: #07403F;
-    --secondary-color: #00B19A;
-    --highlight-color: #00B19A;
-    /* other variables */
-}
-```
-
-### Chatbot
-
-To customize the chatbot:
-
-- **Modify the predefined responses** in the `script.js` file.
-- **Change the avatar image** in the `.chatbot-bubble` class in the HTML.
-- **Adjust the chatbot's style** by modifying the corresponding classes in the CSS.
-
-### Logos and Images
-
-Replace the files in the `attached_assets` folder with your own, keeping the original file names, or update the paths in the HTML.
-
-## Chatbot Functionality
-
-The chatbot is a simple simulation that responds to specific keywords:
-
-1. Questions about CVs or resumes
-2. Interview tips
-3. Information about recommended courses
-4. Information about Artificial Intelligence
-
-To integrate a real chatbot, modify the `getBotResponse()` function in `script.js` to connect to an external API.
-
-## React Integration
-
-To convert this project to React:
-
-1. **Create a new React project**
-   ```sh
-   npx create-react-app empleabot-landing
-   cd empleabot-landing
-   ```
-
-2. **Install the necessary dependencies**
-   ```sh
-   npm install react-feather
-   ```
-
-3. **Structure the components**
-   - `Header`
-   - `Hero`
-   - `Features`
-   - `Questions`
-   - `Footer`
-   - `ChatBot`
-
-4. **Convert the CSS to CSS modules or use styled-components.**
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_twitter) - email@example.com
-
-Project Link: [https://github.com/your-username/your-repo-name](https://github.com/your-username/your-repo-name)
+Para más información, contacta al desarrollador.

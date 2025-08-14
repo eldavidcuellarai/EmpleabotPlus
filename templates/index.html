@@ -27,35 +27,108 @@ Gen<!DOCTYPE html>
                     Comenzar ahora
                 </button>
             </div>
-            
-            <div id="categoryTitle" class="category-title">
-                <h2 class="section-title">Comparte tu CV y selecciona el área que quieres mejorar</h2>
-            </div>
         </section>
 
         <div class="row justify-content-center flex-grow-1">
             <div class="col-md-10">
-                <section id="buttonGrid" class="button-grid mb-4">
-                    <button type="button" class="action-button">
-                        <i data-feather="refresh-cw" class="category-icon"></i>
-                        <h3>Revisión General</h3>
-                        <p>Actualizar, mejorar, optimizar</p>
-                    </button>
-                    <button type="button" class="action-button">
-                        <i data-feather="target" class="category-icon"></i>
-                        <h3>Adaptación por Perfil</h3>
-                        <p>Cambio de sector, roles específicos</p>
-                    </button>
-                    <button type="button" class="action-button">
-                        <i data-feather="briefcase" class="category-icon"></i>
-                        <h3>Primeros Empleos</h3>
-                        <p>Sin experiencia, recién graduados</p>
-                    </button>
-                    <button type="button" class="action-button">
-                        <i data-feather="star" class="category-icon"></i>
-                        <h3>Habilidades y Competencias</h3>
-                        <p>Destacar capacidades clave</p>
-                    </button>
+                <section class="frequent-options-container mb-4">
+                    <div id="optionsHeader" class="options-header" data-bs-toggle="collapse" data-bs-target="#optionsContent" aria-expanded="false" aria-controls="optionsContent">
+                        <div class="options-header-content">
+                            <i data-feather="edit-3" class="options-logo"></i>
+                            <h2 class="section-title mb-0">Opciones Frecuentes para tu CV</h2>
+                        </div>
+                        <i data-feather="chevron-down" class="options-chevron"></i>
+                    </div>
+
+                    <div class="collapse" id="optionsContent">
+                        <div class="button-grid-wrapper">
+                            <div class="accordion" id="cvAccordion">
+                                <!-- Revisión General -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                            <i data-feather="refresh-cw" class="category-icon"></i>
+                                            <div>
+                                                <h3>Revisión General</h3>
+                                                <p>Actualizar, mejorar, optimizar</p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#cvAccordion">
+                                        <div class="accordion-body">
+                                            <button class="suggested-question">¿Qué errores comunes debo evitar en mi CV?</button>
+                                            <button class="suggested-question">¿Puedes revisar mi CV y decirme qué debería mejorar?</button>
+                                            <button class="suggested-question">Necesito actualizar mi CV después de 5 años</button>
+                                            <button class="suggested-question">¿Cómo reducir mi CV a una página sin perder impacto?</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Adaptación por Perfil -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            <i data-feather="target" class="category-icon"></i>
+                                            <div>
+                                                <h3>Adaptación por Perfil</h3>
+                                                <p>Cambio de sector, roles específicos</p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#cvAccordion">
+                                        <div class="accordion-body">
+                                            <button class="suggested-question">¿Cómo enfoco mi CV para conseguir trabajo en tecnología?</button>
+                                            <button class="suggested-question">¿Cómo ajustar mi CV para diferentes roles?</button>
+                                            <button class="suggested-question">Adaptar CV al sector tecnológico</button>
+                                            <button class="suggested-question">Quiero cambiar de sector, ¿cómo adapto mi experiencia?</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Primeros Empleos -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            <i data-feather="briefcase" class="category-icon"></i>
+                                            <div>
+                                                <h3>Primeros Empleos</h3>
+                                                <p>Sin experiencia, recién graduados</p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#cvAccordion">
+                                        <div class="accordion-body">
+                                            <button class="suggested-question">¿Qué pongo en mi CV si no tengo experiencia profesional?</button>
+                                            <button class="suggested-question">¿Cómo destacar prácticas universitarias en mi primer CV?</button>
+                                            <button class="suggested-question">¿Cómo puedo usar mis proyectos de la universidad como experiencia laboral?</button>
+                                            <button class="suggested-question">Tengo experiencia como voluntario, ¿cómo la incluyo en mi CV?</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Habilidades y Competencias -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingFour">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                            <i data-feather="star" class="category-icon"></i>
+                                            <div>
+                                                <h3>Habilidades y Competencias</h3>
+                                                <p>Destacar capacidades clave</p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#cvAccordion">
+                                        <div class="accordion-body">
+                                            <button class="suggested-question">¿Qué habilidades blandas debo incluir en mi CV?</button>
+                                            <button class="suggested-question">¿Cómo demostrar habilidades de liderazgo en mi CV?</button>
+                                            <button class="suggested-question">¿Cómo equilibrar habilidades técnicas y blandas en mi CV?</button>
+                                            <button class="suggested-question">¿Cómo redactar un resumen profesional impactante?</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 <div class="chat-container">

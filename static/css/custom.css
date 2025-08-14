@@ -739,3 +739,54 @@ body {
         right: 15px;
     }
 }
+
+/* Frequent Options Section */
+.frequent-options-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(33, 130, 92, 0.1);
+}
+
+.options-header {
+    padding: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.options-header:hover {
+    background-color: rgba(33, 130, 92, 0.05);
+}
+
+.options-header-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.options-logo {
+    color: var(--brand-green);
+    width: 32px;
+    height: 32px;
+}
+
+.options-chevron {
+    color: var(--button-text);
+    transition: transform 0.3s ease;
+}
+
+.options-header[aria-expanded="true"] .options-chevron {
+    transform: rotate(180deg);
+}
+
+.button-grid-wrapper {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.button-grid-wrapper .accordion {
+    margin-bottom: 0;
+}

@@ -1,3 +1,70 @@
+/* === Compact Accordion for CV Options === */
+.accordion-body {
+    padding: 0.5rem 0.75rem;
+}
+
+.accordion-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+}
+
+.accordion-item {
+    margin-bottom: 8px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.accordion-button.collapsed {
+    background: #f8f9fa;
+    color: var(--primary-color);
+}
+
+.accordion-button:not(.collapsed) {
+    background: #e6f5f2;
+    color: var(--primary-color);
+}
+
+.accordion-button h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0;
+}
+
+.accordion-button p {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+}
+
+.suggested-question {
+    font-size: 0.92rem;
+    padding: 6px 12px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    background: #f4f4f4;
+    border: 1px solid #e0e0e0;
+    color: var(--primary-color);
+    transition: background 0.2s, color 0.2s;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+.suggested-question:hover {
+    background: var(--secondary-color);
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+  .accordion-body {
+    padding: 0.4rem 0.5rem;
+  }
+  .accordion-button {
+    font-size: 0.98rem;
+    padding: 0.4rem 0.5rem;
+  }
+  .suggested-question {
+    font-size: 0.88rem;
+    padding: 5px 8px;
+  }
+}
 /* === Variables y Configuración ===*/
 :root {
     --primary-color: #1d4b4b;
