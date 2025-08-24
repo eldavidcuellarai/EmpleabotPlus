@@ -10,6 +10,10 @@
       "Bash(docker login:*)",
       "Bash(gh auth:*)",
       "Bash(docker push:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(docker tag:*)",
       "Bash(git add:*)"
     ],
     "deny": [],

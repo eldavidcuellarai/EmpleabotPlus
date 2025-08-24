@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EmpleabotPlus - Micrositio IA para el empleo</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/empleabot-chat.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/empleabot-chat.css') }}">
     
     <!-- Marked.js for markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
@@ -158,21 +158,27 @@
                     <button class="slider-nav prev-btn cursos-prev" aria-label="Anterior"><i data-feather="chevron-left"></i></button>
                     <button class="slider-nav next-btn cursos-next" aria-label="Siguiente"><i data-feather="chevron-right"></i></button>
                     <div class="cursos-grid">
-                        <!-- IA courses will be populated here -->
+                        <!-- IA courses -->
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/IAPRALAVIDA2.png') }}" alt="IA para la Vida y el Trabajo" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <div class="curso-banner-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 160px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                🤖 IA para la Vida
+                            </div>
                             <h3>IA para la Vida y el Trabajo</h3>
                             <p>Descubre los conceptos fundamentales de la inteligencia artificial y cómo aplicarla en situaciones cotidianas y laborales para mejorar tu productividad y toma de decisiones.</p>
                             <a href="https://academia.redporlaciberseguridad.org/course/view.php?id=148" class="curso-link" target="_blank">Ir al curso</a>
                         </div>
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/BANNER_MUJERES_BUSCADORAS.png') }}" alt="IA para mujeres buscadoras de empleo" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <div class="curso-banner-placeholder" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); height: 160px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                👩‍💼 Mujeres IA
+                            </div>
                             <h3>IA para mujeres buscadoras de empleo</h3>
                             <p>Curso enfocado en el uso de la inteligencia artificial para potenciar la búsqueda de empleo, optimizar el CV y prepararse para entrevistas, dirigido especialmente a mujeres.</p>
                             <a href="https://academia.redporlaciberseguridad.org/enrol/index.php?id=129" class="curso-link" target="_blank">Ir al curso</a>
                         </div>
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/MSFT_RECURSOS.png') }}" alt="IA para Recursos Humanos" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <div class="curso-banner-placeholder" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); height: 160px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                👥 Recursos Humanos
+                            </div>
                             <h3>IA para Recursos Humanos</h3>
                             <p>Aprende a utilizar la IA en procesos de reclutamiento, selección y gestión de talento, mejorando la eficiencia y objetividad en el área de capital humano.</p>
                             <a href="https://academia.redporlaciberseguridad.org/course/view.php?id=145" class="curso-link" target="_blank">Ir al curso</a>
@@ -187,22 +193,28 @@
                     <div class="cursos-grid">
                         <!-- Digital skills courses -->
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/WOrd_3.png') }}" alt="Microsoft Word" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <div class="curso-banner-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 160px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                📝 Microsoft Word
+                            </div>
                             <h3>Microsoft Word</h3>
                             <p>Aprende el manejo básico de Word, organización por índices, uso de plantillas, revisión y control de cambios, combinación de correspondencia y escritura asistida con IA.</p>
-                            <a href="#" class="curso-link proximamente" target="_blank">Próximamente</a>
+                            <a href="#" class="curso-link proximamente">Próximamente</a>
                         </div>
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/Excel.png') }}" alt="Microsoft Excel" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <div class="curso-banner-placeholder" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); height: 160px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                📊 Microsoft Excel
+                            </div>
                             <h3>Microsoft Excel</h3>
                             <p>Domina la creación de tablas, tablas dinámicas y filtros, funciones de búsqueda y lógicas, y aprovecha el apoyo de IA para fórmulas y gráficas.</p>
-                            <a href="#" class="curso-link proximamente" target="_blank">Próximamente</a>
+                            <a href="#" class="curso-link proximamente">Próximamente</a>
                         </div>
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/Power_Point.png') }}" alt="Microsoft PowerPoint" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <div class="curso-banner-placeholder" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); height: 160px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                📺 PowerPoint
+                            </div>
                             <h3>Microsoft PowerPoint</h3>
                             <p>Utiliza animaciones, plantillas, herramientas de traducción y el apoyo de IA para la revisión de contenido en tus presentaciones.</p>
-                            <a href="#" class="curso-link proximamente" target="_blank">Próximamente</a>
+                            <a href="#" class="curso-link proximamente">Próximamente</a>
                         </div>
                     </div>
                 </div>
