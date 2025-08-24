@@ -1,0 +1,43 @@
+# Archivos de entorno
+# Entornos virtuales
+.venv/
+*.env/
+.env
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Directorios virtuales
+venv/
+ENV/
+antenv/
+
+
+# Archivos temporales
+/tmp/
+*.tmp
+*.log
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+azure_test.py

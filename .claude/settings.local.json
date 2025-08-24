@@ -4,7 +4,13 @@
       "Bash(mkdir:*)",
       "Bash(move:*)",
       "Bash(python:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(docker build:*)",
+      "Bash(copy:*)",
+      "Bash(docker login:*)",
+      "Bash(gh auth:*)",
+      "Bash(docker push:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

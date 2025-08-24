@@ -1,0 +1,260 @@
+Gen<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>empleabot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/chat-bubble.css') }}" rel="stylesheet">
+ </head>
+ <body>
+    
+
+    <main class="container min-vh-100 d-flex flex-column py-4">
+        <section class="text-center mb-4">
+            <h1 class="logo">empleabot</h1>
+            
+            
+        </section>
+
+        <div class="row justify-content-center flex-grow-1">
+            <div class="col-md-10">
+                <section class="frequent-options-container mb-4">
+                    <div id="optionsHeader" class="options-header" data-bs-toggle="collapse" data-bs-target="#optionsContent" aria-expanded="false" aria-controls="optionsContent">
+                        <div class="options-header-content">
+                            <i data-feather="edit-3" class="options-logo"></i>
+                            <h2 class="section-title mb-0">Opciones Frecuentes para tu CV</h2>
+                        </div>
+                        <i data-feather="chevron-down" class="options-chevron"></i>
+                    </div>
+
+                    <div class="collapse" id="optionsContent">
+                        <div class="button-grid-wrapper">
+                            <div class="accordion" id="cvAccordion">
+                                <!-- Revisión General -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                            <i data-feather="refresh-cw" class="category-icon"></i>
+                                            <div>
+                                                <h3>Revisión General</h3>
+                                                <p>Actualizar, mejorar, optimizar</p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#cvAccordion">
+                                        <div class="accordion-body">
+                                            <button class="suggested-question">¿Qué errores comunes debo evitar en mi CV?</button>
+                                            <button class="suggested-question">¿Puedes revisar mi CV y decirme qué debería mejorar?</button>
+                                            <button class="suggested-question">Necesito actualizar mi CV después de 5 años</button>
+                                            <button class="suggested-question">¿Cómo reducir mi CV a una página sin perder impacto?</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Adaptación por Perfil -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            <i data-feather="target" class="category-icon"></i>
+                                            <div>
+                                                <h3>Adaptación por Perfil</h3>
+                                                <p>Cambio de sector, roles específicos</p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#cvAccordion">
+                                        <div class="accordion-body">
+                                            <button class="suggested-question">¿Cómo enfoco mi CV para conseguir trabajo en tecnología?</button>
+                                            <button class="suggested-question">¿Cómo ajustar mi CV para diferentes roles?</button>
+                                            <button class="suggested-question">Adaptar CV al sector tecnológico</button>
+                                            <button class="suggested-question">Quiero cambiar de sector, ¿cómo adapto mi experiencia?</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Primeros Empleos -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            <i data-feather="briefcase" class="category-icon"></i>
+                                            <div>
+                                                <h3>Primeros Empleos</h3>
+                                                <p>Sin experiencia, recién graduados</p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#cvAccordion">
+                                        <div class="accordion-body">
+                                            <button class="suggested-question">¿Qué pongo en mi CV si no tengo experiencia profesional?</button>
+                                            <button class="suggested-question">¿Cómo destacar prácticas universitarias en mi primer CV?</button>
+                                            <button class="suggested-question">¿Cómo puedo usar mis proyectos de la universidad como experiencia laboral?</button>
+                                            <button class="suggested-question">Tengo experiencia como voluntario, ¿cómo la incluyo en mi CV?</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Habilidades y Competencias -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingFour">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                            <i data-feather="star" class="category-icon"></i>
+                                            <div>
+                                                <h3>Habilidades y Competencias</h3>
+                                                <p>Destacar capacidades clave</p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#cvAccordion">
+                                        <div class="accordion-body">
+                                            <button class="suggested-question">¿Qué habilidades blandas debo incluir en mi CV?</button>
+                                            <button class="suggested-question">¿Cómo demostrar habilidades de liderazgo en mi CV?</button>
+                                            <button class="suggested-question">¿Cómo equilibrar habilidades técnicas y blandas en mi CV?</button>
+                                            <button class="suggested-question">¿Cómo redactar un resumen profesional impactante?</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="chat-container">
+                    <div id="chatMessages" class="chat-messages mb-4"></div>
+                    <!-- Moved input bar into the chat container so it appears below inside the responses box -->
+                    <form id="chatForm" class="d-flex gap-3 align-items-center">
+                        <div class="message-input-container flex-grow-1 d-flex align-items-center">
+                            <label for="pdfFile" class="file-upload-label me-2">
+                                <i data-feather="paperclip"></i>
+                                <input type="file" class="form-control d-none" id="pdfFile" accept=".pdf">
+                            </label>
+                            <input type="text" class="form-control border-0" id="messageInput" placeholder="Escribe tu mensaje..." required>
+                        </div>
+                        <button class="btn btn-send" type="submit" id="sendBtn">
+                            <i data-feather="send"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <button class="floating-chat-btn" id="floatingChatBtn" onclick="openChatBubble()">
+            <i data-feather="message-circle"></i>
+        </button>
+
+        <aside class="chat-widget minimized" id="chatWidget" style="display: none;">
+            <div class="chat-header">
+                <h3>
+                    <i data-feather="message-circle"></i>
+                    Empleabot
+                </h3>
+                <div class="chat-controls">
+                    <button class="chat-control-btn" id="minimizeBtn" title="Minimizar">
+                        <i data-feather="minimize-2"></i>
+                    </button>
+                    <button class="chat-control-btn" id="maximizeBtn" title="Maximizar">
+                        <i data-feather="maximize-2"></i>
+                    </button>
+                    <button class="chat-control-btn" id="closeBtn" title="Cerrar">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-body">
+                <div class="chat-messages" id="chatMessagesWidget">
+                    <div class="message bot-message">
+                        ¡Hola! Soy tu asistente virtual de empleabilidad. ¿En qué puedo ayudarte hoy?
+                    </div>
+                    <div class="suggested-questions">
+                        <button class="suggested-question" onclick="selectSuggestion(this)">¿Cómo mejorar mi CV?</button>
+                        <button class="suggested-question" onclick="selectSuggestion(this)">Consejos para entrevistas</button>
+                        <button class="suggested-question" onclick="selectSuggestion(this)">Cursos recomendados</button>
+                    </div>
+                </div>
+
+                <div class="chat-input">
+                    <form id="chatFormWidget" class="input-container">
+                        <button type="button" class="file-upload" id="fileUploadBtn" title="Adjuntar archivo">
+                            <i data-feather="paperclip"></i>
+                            <input type="file" id="fileInputWidget" accept=".pdf,.doc,.docx" hidden>
+                        </button>
+                        <input type="text" class="message-input" id="messageInputWidget" placeholder="Escribe tu pregunta aquí..." autocomplete="off">
+                        <button type="submit" class="send-button" id="sendBtnWidget">
+                            <i data-feather="send"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+
+<style>
+    .accordion-button div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 1rem;
+    }
+    .accordion-button h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+    .accordion-button p {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin: 0;
+    }
+    .suggested-question {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        position: relative;
+    }
+    .suggested-question:hover {
+        background-color: rgba(33, 130, 92, 0.1);
+        border-color: #21825C;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(33, 130, 92, 0.15);
+    }
+    .suggested-question:active {
+        transform: translateY(0);
+        background-color: #21825C;
+        color: white;
+    }
+    .suggested-question::after {
+        content: '→';
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        color: #21825C;
+    }
+    .suggested-question:hover::after {
+        opacity: 1;
+    }
+</style>

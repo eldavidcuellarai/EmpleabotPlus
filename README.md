@@ -63,7 +63,7 @@ This application is optimized for RunPod deployment:
 
 2. **Environment Variables:**
    Configure these in RunPod environment:
-   ```env
+   ```envi i
    OPENAI_API_KEY=your_openai_api_key
    OPENAI_ASSISTANT_ID=your_assistant_id
    SESSION_SECRET=your_secure_secret

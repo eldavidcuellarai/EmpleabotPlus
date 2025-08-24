@@ -3,56 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmpleabotPlus - Micrositio IA para el empleo</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/empleabot-chat.css') }}">
+    <title>Micrositio IA para el empleo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="static/css/empleabot-chat.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Marked.js for markdown parsing -->
+    <!-- 3333 2Asegurarnos de que marked se cargue primero y esté disponible para la burbuja de chat -->
     <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
     <script>
+        // Variable global para verificar si marked está cargado
         window.markedLoaded = false;
         
+        // Función para inicializar marked
         function initMarked() {
             if (typeof marked !== 'undefined') {
                 window.markedLoaded = true;
                 console.log('Marked library loaded successfully');
                 
+                // Configurar opciones de marked
                 marked.setOptions({
-                    breaks: true,
-                    gfm: true,
-                    headerIds: false,
-                    mangle: false,
-                    smartLists: true,
-                    smartypants: false,
-                    headerSpacing: false
+                    breaks: true,        // Insertar saltos de línea en los párrafos
+                    gfm: true,           // Usar GitHub Flavored Markdown
+                    headerIds: false,    // No generar IDs para los encabezados
+                    mangle: false,       // No ofuscar los enlaces de email
+                    smartLists: true,    // Usar listas inteligentes como GitHub
+                    smartypants: false,   // No usar comillas tipográficas
+                    headerSpacing: false  // Evitar espaciado adicional en los encabezados
                 });
                 
+                // Función global para renderizar markdown
                 window.renderMarkdown = function(text) {
                     if (!text) return '';
                     
                     try {
+                        // Limpiar el texto para evitar problemas comunes
                         const cleanText = text
-                            .replace(/\\n/g, '\n')
-                            .replace(/\n\n\n+/g, '\n\n')
-                            .replace(/(#+)(.*)/g, '$1$2');
+                            .replace(/\\n/g, '\n')  // Reemplazar escape sequences
+                            .replace(/\n\n\n+/g, '\n\n')  // Reducir líneas en blanco excesivas
+                            .replace(/(#+)(.*)/g, '$1$2'); // Eliminar espacios entre # y el texto del título
                             
                         return marked.parse(cleanText);
                     } catch (e) {
                         console.error('Error parsing markdown:', e);
+                        // Envolver en un párrafo y escapar caracteres HTML
                         return `<p>${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`;
                     }
                 };
             } else {
                 console.error('Marked library failed to load');
+                // Intentar cargar marked de nuevo
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js';
+                script.onload = initMarked;
+                document.head.appendChild(script);
+                
+                // Proporcionar un método de respaldo
                 window.renderMarkdown = function(text) {
                     return `<p>${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`;
                 };
             }
         }
         
+        // Ejecutar en cuanto se cargue el documento
         document.addEventListener('DOMContentLoaded', initMarked);
     </script>
     <script src="https://unpkg.com/feather-icons"></script>
@@ -73,9 +87,10 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <!-- Left side content if needed -->
+                    <!-- Left side now empty or can contain other content -->
                 </div>
                 <div class="hero-image">
+                    <!-- Search bar and suggestions from How to Start section arranged vertically -->
                     <div class="hero-search-section">
                         <h1>
                             Desarrolla 
@@ -155,53 +170,112 @@
             <div class="cursos-container">
                 <!-- Tab content for IA -->
                 <div class="tab-content active" id="ia-content">
-                    <button class="slider-nav prev-btn cursos-prev" aria-label="Anterior"><i data-feather="chevron-left"></i></button>
-                    <button class="slider-nav next-btn cursos-next" aria-label="Siguiente"><i data-feather="chevron-right"></i></button>
+                        <button class="slider-nav prev-btn cursos-prev" aria-label="Anterior"><i data-feather="chevron-left"></i></button>
+                        <button class="slider-nav next-btn cursos-next" aria-label="Siguiente"><i data-feather="chevron-right"></i></button>
                     <div class="cursos-grid">
-                        <!-- IA courses will be populated here -->
+                        <!-- IA para la Vida y el Trabajo -->
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/IAPRALAVIDA2.png') }}" alt="IA para la Vida y el Trabajo" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <img src="Imagenes/IAPRALAVIDA2.png" alt="IA para la Vida y el Trabajo" class="curso-banner">
                             <h3>IA para la Vida y el Trabajo</h3>
                             <p>Descubre los conceptos fundamentales de la inteligencia artificial y cómo aplicarla en situaciones cotidianas y laborales para mejorar tu productividad y toma de decisiones.</p>
                             <a href="https://academia.redporlaciberseguridad.org/course/view.php?id=148" class="curso-link" target="_blank">Ir al curso</a>
                         </div>
+                        <!-- IA para mujeres buscadoras de empleo -->
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/BANNER_MUJERES_BUSCADORAS.png') }}" alt="IA para mujeres buscadoras de empleo" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <img src="Imagenes/BANNER MUJERES BUSCADORAS.png" alt="IA para mujeres buscadoras de empleo" class="curso-banner">
                             <h3>IA para mujeres buscadoras de empleo</h3>
                             <p>Curso enfocado en el uso de la inteligencia artificial para potenciar la búsqueda de empleo, optimizar el CV y prepararse para entrevistas, dirigido especialmente a mujeres.</p>
                             <a href="https://academia.redporlaciberseguridad.org/enrol/index.php?id=129" class="curso-link" target="_blank">Ir al curso</a>
                         </div>
+                        <!-- IA para Recursos Humanos -->
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/MSFT_RECURSOS.png') }}" alt="IA para Recursos Humanos" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <img src="Imagenes/MSFT RECURSOS.png" alt="IA para Recursos Humanos" class="curso-banner">
                             <h3>IA para Recursos Humanos</h3>
                             <p>Aprende a utilizar la IA en procesos de reclutamiento, selección y gestión de talento, mejorando la eficiencia y objetividad en el área de capital humano.</p>
                             <a href="https://academia.redporlaciberseguridad.org/course/view.php?id=145" class="curso-link" target="_blank">Ir al curso</a>
                         </div>
-                        <!-- Add more courses as needed -->
+                        <!-- IA Para ejecutivos de TI -->
+                        <div class="curso-card">
+                            <img src="Imagenes/MSFT EJECUTIVOS.png" alt="IA Para ejecutivos de TI" class="curso-banner">
+                            <h3>IA Para ejecutivos de TI</h3>
+                            <p>Explora el uso de la inteligencia artificial en áreas de TI, desde la automatización de procesos hasta la ciberseguridad y el análisis avanzado de datos.</p>
+                            <a href="https://academia.redporlaciberseguridad.org/course/view.php?id=147" class="curso-link" target="_blank">Ir al curso</a>
+                        </div>
+                        <!-- IA para Marketing y Ventas -->
+                        <div class="curso-card">
+                            <img src="Imagenes/MSFT MARKETING.png" alt="Marketing y Ventas" class="curso-banner">
+                            <h3>Inteligencia Artificial para Marketing y Ventas</h3>
+                            <p>Aprende a implementar soluciones de IA en estrategias de marketing y ventas para mejorar la efectividad de tus campañas y la relación con los clientes.</p>
+                            <a href="https://academia.redporlaciberseguridad.org/enrol/index.php?id=128" class="curso-link" target="_blank">Ir al curso</a>
+                        </div>
+                        <!-- Ciberseguridad en el Trabajo -->
+                        <div class="curso-card">
+                            <img src="Imagenes/Ciberseguridad en el Trabajo.png" alt="Ciberseguridad en el Trabajo" class="curso-banner">
+                            <h3>Ciberseguridad en el Trabajo</h3>
+                            <p>Aprende los fundamentos de la ciberseguridad y cómo proteger la información en el entorno laboral.</p>
+                            <a href="https://academia.redporlaciberseguridad.org/enrol/index.php?id=5" class="curso-link" target="_blank">Ir al curso</a>
+                        </div>
+                        <!-- IA Para Instructores -->
+                        <div class="curso-card">
+                            <img src="Imagenes/IA para instructores.jpg" alt="IA Para Instructores" class="curso-banner">
+                            <h3>IA Para Instructores</h3>
+                            <p>Descubre cómo integrar la IA en tus procesos de enseñanza y mejorar la experiencia educativa.</p>
+                            <a href="https://academia.redporlaciberseguridad.org/enrol/index.php?id=123" class="curso-link" target="_blank">Ir al curso</a>
+                        </div>
+                        <!-- IA para PyMEs -->
+                        <div class="curso-card">
+                            <img src="Imagenes/MYPIMEBANNER SNE.png" alt="IA para PyMEs" class="curso-banner">
+                            <h3>IA para Directores de Pequeñas y Medianas Empresas</h3>
+                            <p>Aprende a implementar soluciones de IA para mejorar la eficiencia y competitividad de tu PyME.</p>
+                            <a href="https://academia.redporlaciberseguridad.org/course/view.php?id=127" class="curso-link" target="_blank">Ir al curso</a>
+                        </div>
                     </div>
                 </div>
                 <!-- Tab content for Habilidades Digitales -->
                 <div class="tab-content" id="habilidades-content">
-                    <button class="slider-nav prev-btn cursos-prev" aria-label="Anterior"><i data-feather="chevron-left"></i></button>
-                    <button class="slider-nav next-btn cursos-next" aria-label="Siguiente"><i data-feather="chevron-right"></i></button>
+                        <button class="slider-nav prev-btn cursos-prev" aria-label="Anterior"><i data-feather="chevron-left"></i></button>
+                        <button class="slider-nav next-btn cursos-next" aria-label="Siguiente"><i data-feather="chevron-right"></i></button>
                     <div class="cursos-grid">
-                        <!-- Digital skills courses -->
+                        <!-- Word -->
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/WOrd_3.png') }}" alt="Microsoft Word" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <img src="Imagenes/WOrd 3.png" alt="Microsoft Word" class="curso-banner">
                             <h3>Microsoft Word</h3>
                             <p>Aprende el manejo básico de Word, organización por índices, uso de plantillas, revisión y control de cambios, combinación de correspondencia y escritura asistida con IA.</p>
                             <a href="#" class="curso-link proximamente" target="_blank">Próximamente</a>
                         </div>
+                        <!-- Excel -->
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/Excel.png') }}" alt="Microsoft Excel" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <img src="Imagenes/Excel.png" alt="Microsoft Excel" class="curso-banner">
                             <h3>Microsoft Excel</h3>
                             <p>Domina la creación de tablas, tablas dinámicas y filtros, funciones de búsqueda y lógicas, y aprovecha el apoyo de IA para fórmulas y gráficas.</p>
                             <a href="#" class="curso-link proximamente" target="_blank">Próximamente</a>
                         </div>
+                        <!-- PowerPoint -->
                         <div class="curso-card">
-                            <img src="{{ url_for('static', filename='images/Power_Point.png') }}" alt="Microsoft PowerPoint" class="curso-banner" onerror="this.src='{{ url_for('static', filename='images/default-course.png') }}'">
+                            <img src="Imagenes/Power Point.png" alt="Microsoft PowerPoint" class="curso-banner">
                             <h3>Microsoft PowerPoint</h3>
                             <p>Utiliza animaciones, plantillas, herramientas de traducción y el apoyo de IA para la revisión de contenido en tus presentaciones.</p>
+                            <a href="#" class="curso-link proximamente" target="_blank">Próximamente</a>
+                        </div>
+                        <!-- Outlook -->
+                        <div class="curso-card">
+                            <img src="Imagenes/outlook.png" alt="Microsoft Outlook" class="curso-banner">
+                            <h3>Microsoft Outlook</h3>
+                            <p>Aprende a compartir archivos por correo, opciones de seguridad, redacción de correos con IA, reglas de correo y manejo de calendario.</p>
+                            <a href="#" class="curso-link proximamente" target="_blank">Próximamente</a>
+                        </div>
+                        <!-- Teams -->
+                        <div class="curso-card">
+                            <img src="Imagenes/teams.png" alt="Microsoft Teams" class="curso-banner">
+                            <h3>Microsoft Teams</h3>
+                            <p>Conoce cómo crear grupos y canales, usar aplicaciones y pestañas, gestionar reuniones y videollamadas, realizar transcripciones y grabaciones.</p>
+                            <a href="#" class="curso-link proximamente" target="_blank">Próximamente</a>
+                        </div>
+                        <!-- Seguridad Digital -->
+                        <div class="curso-card">
+                            <img src="Imagenes/security.png" alt="Seguridad Digital" class="curso-banner">
+                            <h3>Seguridad Digital</h3>
+                            <p>Aprende sobre bloqueo de dispositivos, actualizaciones de seguridad, cifrado de disco, uso de antivirus/antimalware y herramientas antiphishing.</p>
                             <a href="#" class="curso-link proximamente" target="_blank">Próximamente</a>
                         </div>
                     </div>
@@ -281,7 +355,7 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/empleabot-chat.js') }}"></script>
+    <script src="script.js"></script>
+    <script src="static/js/empleabot-chat.js"></script>
 </body>
 </html>

@@ -1,0 +1,2474 @@
+/* === Compact Accordion for CV Options === */
+.accordion-body {
+    padding: 0.5rem 0.75rem;
+}
+
+.accordion-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+}
+
+.accordion-item {
+    margin-bottom: 8px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.accordion-button.collapsed {
+    background: #f8f9fa;
+    color: var(--primary-color);
+}
+
+.accordion-button:not(.collapsed) {
+    background: #e6f5f2;
+    color: var(--primary-color);
+}
+
+.accordion-button h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0;
+}
+
+.accordion-button p {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+}
+
+.suggested-question {
+    font-size: 0.92rem;
+    padding: 6px 12px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    background: #f4f4f4;
+    border: 1px solid #e0e0e0;
+    color: var(--primary-color);
+    transition: background 0.2s, color 0.2s;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+.suggested-question:hover {
+    background: var(--secondary-color);
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+  .accordion-body {
+    padding: 0.4rem 0.5rem;
+  }
+  .accordion-button {
+    font-size: 0.98rem;
+    padding: 0.4rem 0.5rem;
+  }
+  .suggested-question {
+    font-size: 0.88rem;
+    padding: 5px 8px;
+  }
+}
+/* === Variables y Configuración ===*/
+:root {
+    --primary-color: #1d4b4b;
+    --secondary-color: rgb(16, 185, 129);
+    --highlight-color: rgb(16, 185, 129);
+    --background-color: #FFFFFF;
+    --text-color: #333333;
+    --text-light: #666666;
+    --border-color: #E5E5E5;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --hero-bg-color: #1a3937;
+    --yellow-icon: #FFCE46;
+    --green-icon: #26C485;
+    --blue-icon: #4F9BFF;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --animation-duration: 0.3s;
+    --tw-text-opacity: 1;
+    --tw-bg-opacity: 1;
+}
+
+/* === Reset y estilos base === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+ul {
+    list-style: none;
+}
+
+/* Focus styles for accessibility */
+*:focus {
+    outline: 2px solid var(--highlight-color);
+    outline-offset: 2px;
+}
+
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid var(--highlight-color);
+    outline-offset: 2px;
+}
+
+/* === Estilos para Markdown === */
+/* Solución para evitar separación en títulos de markdown */
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.3;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Estilos específicos para encabezados en markdown renderizado */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    font-weight: 600;
+    word-spacing: -0.05em;
+    letter-spacing: -0.02em;
+}
+
+.message.bot .message-text h1,
+.message.bot .message-text h2,
+.message.bot .message-text h3,
+.message.bot .message-text h4,
+.message.bot .message-text h5,
+.message.bot .message-text h6 {
+    line-height: 1.3;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+}
+
+/* === Utilidades === */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.text-highlight {
+    color: var(--highlight-color);
+}
+
+.ia-highlight {
+    color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+    font-weight: 700;
+    font-size: 0.9em;
+}
+
+/* === Animaciones === */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes floatingAnimation {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.feature-card, .question-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.feature-card.animated, .question-card.animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* === Componentes === */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 26px;
+    border-radius: 50px;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    gap: 10px;
+}
+
+.btn i {
+    font-size: 18px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: var(--primary-color);
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: rgb(13, 148, 103);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(16,185,129,0.25);
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* === Header === */
+.header {
+    padding: 10px 0;
+    background: linear-gradient(180deg, var(--primary-color) 0%, #0f2f2c 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.right-logos {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    height: 50px;
+    filter: brightness(0) invert(1);
+}
+
+.right-logos .logo {
+    filter: none;
+}
+
+/* Header responsive */
+@media (max-width: 768px) {
+    .header {
+        padding: 8px 0;
+    }
+    
+    .site-title {
+        font-size: 1.2rem;
+    }
+    
+    .logo {
+        height: 40px;
+    }
+    
+    .right-logos {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-title {
+        font-size: 1rem;
+    }
+    
+    .logo {
+        height: 35px;
+    }
+    
+    .right-logos {
+        gap: 10px;
+    }
+}
+
+/* === Hero Section === */
+.hero {
+    background-color: var(--hero-bg-color);
+    color: white;
+    padding: 10px 0 60px 0; /* Reduced bottom padding from 80px to 60px */
+    margin-top: -10px;
+    overflow: hidden;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    gap: 60px; /* Increased gap for better spacing */
+}
+
+.hero-text {
+    flex: 1.8; /* Increased from 1.2 to 1.8 for more space */
+    animation: fadeIn 0.8s ease-out;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: none;
+}
+
+/* New wrapper for the search section to organize vertically */
+.hero-search-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px; /* Further reduced from 15px for more compact design */
+}
+
+/* Adjust search container for hero section */
+.hero-search-section .search-container {
+    margin: 0; /* Remove default margin from search container */
+}
+
+/* Adjust FAQ slider for hero section */
+.hero-search-section .faq-slider-container {
+    margin: 0; /* Remove default margin */
+}
+
+.hero-search-section .faq-questions-hint {
+    margin-top: 0;
+    margin-bottom: 0.8rem; /* Reduced from 1rem */
+}
+
+.hero h1 {
+    font-size: 1.875rem;
+    line-height: 1.125;
+    margin-bottom: 20px; /* Reduced from 24px */
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.025em;
+}
+
+.hero .text-highlight {
+    display: inline;
+    color: var(--highlight-color);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 25px; /* Reduced from 30px */
+    opacity: 0.9;
+    max-width: 90%;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 25px; /* Reduced from 30px */
+}
+
+/* === Hero Search Section Title Styles === */
+.hero-search-section h1 {
+    font-size: 1.875rem;
+    line-height: 1.125;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.025em;
+    text-align: center; /* Always centered */
+}
+
+.hero-search-section .text-highlight {
+    display: inline;
+    color: var(--highlight-color);
+}
+
+.hero-search-section p {
+    font-size: 1.1rem; /* Slightly smaller than original hero p */
+    margin-bottom: 25px;
+    opacity: 0.9;
+    text-align: center; /* Always centered */
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Adjust hero-text section since it no longer has the main content */
+.hero-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure buttons still look good in the left section */
+.hero-text .hero-buttons {
+    margin-top: 0; /* Remove top margin since there's no text above */
+}
+
+@media (min-width: 992px) {
+    .hero-search-section h1 {
+        font-size: 2.5rem; /* Larger on desktop */
+        text-align: center; /* Keep centered on desktop too */
+    }
+    
+    .hero-search-section p {
+        font-size: 1.2rem; /* Match original size on desktop */
+        text-align: center; /* Keep centered on desktop too */
+    }
+}
+
+/* === Features Section === */
+.features {
+    padding: 60px 0; /* Reduced from 80px to 60px */
+    background-color: white;
+    color: var(--text-color);
+}
+
+.features .section-title {
+    color: var(--primary-color);
+    margin-bottom: 25px; /* Reduced from 30px */
+}
+
+.feature-buttons-wrapper {
+    max-width: 800px;
+    margin: 0 auto 25px; /* Reduced from 30px */
+}
+
+.feature-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+}
+
+.feature-button {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    color: var(--text-color);
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.feature-button.active, .feature-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(29, 75, 75, 0.2);
+    border-color: var(--primary-color);
+}
+
+.feature-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.feature-icon-btn.yellow {
+    background-color: var(--yellow-icon);
+    color: white;
+}
+
+.feature-icon-btn.green {
+    background-color: var(--green-icon);
+    color: white;
+}
+
+.feature-icon-btn.purple {
+    background-color: #9C27B0;
+    color: white;
+}
+
+.feature-icon-btn.orange {
+    background-color: #FF5722;
+    color: white;
+}
+
+.feature-content-container {
+    max-width: 800px;
+    margin: 25px auto 0; /* Reduced from 30px */
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 20px; /* Reduced from 25px */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    display: block; /* Show by default */
+}
+
+.feature-content-container.active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.feature-content {
+    display: none;
+}
+
+.feature-content:first-child,
+.feature-content.active {
+    display: block;
+}
+
+.feature-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+    .feature-content-container {
+        margin: 20px 15px 0;
+        padding: 20px 15px;
+    }
+    
+    .feature-button {
+        width: calc(50% - 15px);
+        justify-content: center;
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .feature-button {
+        width: 100%;
+    }
+}
+
+/* === How to Start Section === */
+.how-to-start {
+    padding: 30px 0 60px 0; /* Reduced from 40px 0 80px 0 */
+    background-color: var(--primary-color);
+    position: relative;
+    color: white;
+}
+
+.how-to-start:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5%;
+    height: 100%;
+    background-color: var(--hero-bg-color);
+    z-index: 0;
+}
+
+.how-to-start:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 5%;
+    height: 100%;
+    background-color: var(--hero-bg-color);
+    z-index: 0;
+}
+
+.how-to-start .container {
+    position: relative;
+    z-index: 1;
+}
+
+.section-title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 12px; /* Reduced from 15px */
+}
+
+.section-icon {
+    color: var(--highlight-color);
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.how-to-start .section-title {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 12px; /* Reduced from 15px */
+    text-align: center;
+    font-weight: 700;
+}
+
+.how-to-start .section-description {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 35px; /* Reduced from 40px */
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+/* Search container */
+.search-container {
+    display: flex;
+    margin: 1.5rem auto; /* Reduced from 2rem */
+    width: 100%;
+    max-width: 600px;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255,255,255,0.18);
+    transition: all 0.3s ease;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: saturate(140%) blur(6px);
+}
+
+.search-container:hover, 
+.search-container:focus-within {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border-color: var(--highlight-color);
+    transform: translateY(-2px);
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.9rem 1.4rem; /* Slightly reduced padding */
+    border: none;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: #999;
+}
+
+.search-button {
+    padding: 0.9rem 1.8rem; /* Slightly reduced padding */
+    background-color: rgb(16, 185, 129);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover, 
+.search-button:focus {
+    background-color: rgb(13, 148, 103);
+    transform: scale(1.02);
+}
+
+.search-button:active {
+    transform: scale(0.98);
+}
+
+.search-button::after {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>') no-repeat center center;
+    background-size: contain;
+    margin-left: 8px;
+    opacity: 0.9;
+}
+
+.faq-slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto; /* Further reduced from 30px */
+    position: relative;
+    max-width: 650px; /* Slightly reduced width for more compact design */
+}
+
+.faq-slider {
+    display: flex;
+    gap: 15px; /* Slightly reduced gap for more compact spacing */
+    width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding: 10px 8px; /* Further reduced padding */
+    transition: transform 0.3s ease; /* Add transition for smooth sliding */
+}
+
+.faq-card {
+    min-width: calc(33.333% - 15px); /* Changed to show exactly 3 cards */
+    flex: 0 0 calc(33.333% - 15px); /* Fixed width for 3 cards */
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 12px; /* Slightly smaller border radius */
+    padding: 10px 8px; /* Even more reduced padding for smaller height */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); /* Reduced shadow */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.faq-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+    background-color: white;
+}
+
+.faq-card.highlight {
+    background-color: white;
+    border-color: var(--secondary-color);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.faq-icon {
+    width: 28px; /* Smaller icon - reduced from 36px */
+    height: 28px; /* Smaller icon - reduced from 36px */
+    border-radius: 50%;
+    background-color: rgba(16, 185, 129, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 4px; /* Further reduced margin from 6px */
+    color: var(--secondary-color);
+}
+
+.faq-icon svg {
+    width: 16px; /* Smaller svg icon size */
+    height: 16px; /* Smaller svg icon size */
+}
+
+.faq-card h3 {
+    font-size: 0.8rem; /* Smaller font size for more compact look */
+    margin-bottom: 0; /* Remove bottom margin since we removed description */
+    color: var(--primary-color);
+    line-height: 1.1; /* Even tighter line height */
+    font-weight: 600; /* Slightly bolder to maintain readability */
+}
+
+.faq-card p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.slider-nav:hover {
+    background-color: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.prev-btn {
+    left: -18px;
+}
+
+.next-btn {
+    right: -18px;
+}
+
+/* === Enhanced FAQ Slider Navigation === */
+.faq-slider-container .slider-nav {
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.faq-slider-container .slider-nav:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.faq-slider-container .slider-nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* Hide navigation arrows when not needed */
+.faq-slider-container .slider-nav.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Smooth sliding animation */
+.faq-slider {
+    scroll-behavior: smooth;
+}
+
+@media (max-width: 1200px) {
+    .faq-card {
+        min-width: calc(33.333% - 15px); /* Keep 3 cards on medium screens */
+        flex: 0 0 calc(33.333% - 15px);
+    }
+}
+
+@media (max-width: 992px) {
+    .faq-card {
+        min-width: calc(50% - 15px); /* Show 2 cards on smaller screens */
+        flex: 0 0 calc(50% - 15px);
+    }
+    
+    .faq-slider-container {
+        max-width: 500px; /* Adjust container width for 2 cards */
+    }
+}
+
+@media (max-width: 768px) {
+    .faq-card {
+        min-width: calc(100% - 15px); /* Show 1 card on mobile */
+        flex: 0 0 calc(100% - 15px);
+    }
+    
+    .faq-slider-container {
+        max-width: 350px; /* Adjust container width for 1 card */
+        margin: 25px auto; /* Reduced from larger values */
+    }
+    
+    .slider-nav {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .prev-btn {
+        left: -10px;
+    }
+    
+    .next-btn {
+        right: -10px;
+    }
+}
+
+.steps-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px; /* Reduced from 30px */
+    margin-top: 35px; /* Reduced from 40px */
+}
+
+.step-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 25px; /* Reduced from 30px */
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.step-icon {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--secondary-color);
+    width: 60px; /* Reduced from 70px */
+    height: 60px; /* Reduced from 70px */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px; /* Reduced from 20px */
+}
+
+.step-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 12px; /* Reduced from 15px */
+    color: var(--primary-color);
+}
+
+.step-card p {
+    color: var(--text-light);
+}
+
+/* === Capacitación en IA Section === */
+
+.cursos-container {
+    position: relative;
+    overflow: hidden;
+    padding: 0 40px; /* Espacio para los botones de navegación */
+    width: 1505px; /* Fixed width to show exactly 3 complete cards regardless of parent container */
+    margin: 0 auto; /* Center the container */
+    /* Break out of parent container constraints */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tab-content {
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow-x: auto; /* Este es ahora el viewport de desplazamiento */
+    overflow-y: hidden; /* Hide vertical overflow to keep single row */
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    max-height: 494px; /* Adjusted to accommodate the new card height */
+}
+
+.tab-content::-webkit-scrollbar {
+    display: none;
+}
+
+.cursos-grid {
+    display: flex;
+    width: max-content; /* Asegura que el grid sea tan ancho como todas las tarjetas juntas */
+    gap: 24px;
+    padding: 20px 0;
+    height: 474px; /* Adjusted to accommodate the new card height */
+    overflow: visible; /* Allow cards to be visible */
+}
+
+.curso-card {
+    flex: 0 0 459px; /* Updated to match exact developer tools dimensions */
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 434px; /* Updated to match exact developer tools dimensions (rounded) */
+}
+
+
+
+.curso-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.curso-banner {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.curso-card h3 {
+    padding: 16px 20px 8px;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+}
+
+.curso-card p {
+    padding: 0 20px 16px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    flex-grow: 1;
+}
+
+.curso-link {
+    display: inline-block;
+    margin: 0 20px 20px;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.curso-link:hover {
+    background-color: rgb(13, 148, 103);
+}
+
+.curso-link.proximamente {
+    background-color: #d6d6d6;
+    cursor: not-allowed;
+}
+
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.slider-nav:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.slider-nav.prev-btn {
+    left: 5px;
+}
+
+.slider-nav.next-btn {
+    right: 5px;
+}
+
+.slider-nav.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 992px) {
+    .curso-card {
+        width: calc(50% - 12px);
+    }
+}
+
+@media (max-width: 768px) {
+    .curso-card {
+        width: calc(100% - 8px);
+    }
+}
+
+/* Responsive styles for cursos-container */
+@media (max-width: 1505px) {
+    .cursos-container {
+        width: 100vw; /* Use full viewport width */
+        max-width: 1505px; /* But don't exceed our target width */
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: calc(-50vw + 50%); /* Center relative to viewport, not parent */
+    }
+}
+
+@media (max-width: 768px) {
+    .cursos-container {
+        width: 100%;
+        left: auto;
+        transform: none;
+        margin-left: 0;
+        padding: 0 20px; /* Reduced padding for mobile */
+        position: relative;
+    }
+}
+
+@media (max-width: 500px) {
+    .cursos-container {
+        padding: 0 10px; /* Even smaller padding for very small screens */
+    }
+}
+.capacitacion {
+    padding: 10px 0 80px 0;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -40px;
+}
+
+#section-description-container {
+    margin-bottom: 20px;
+}
+
+.section-description {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.tab-buttons {
+    display: flex;
+    background: #fff;
+    border-radius: 50px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    padding: 16px 24px;
+    gap: 24px;
+}
+
+.tab-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    color: #374151;
+    padding: 14px 40px;
+    border-radius: 32px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+    outline: none;
+    box-shadow: none;
+    box-shadow: 0 2px 8px rgba(6,95,70,0.06);
+}
+
+.tab-button i, .tab-button svg {
+    width: 26px;
+    height: 26px;
+    vertical-align: middle;
+    margin-right: 6px;
+    height: 2.2rem;
+}
+
+.tab-button.active {
+    background: linear-gradient(135deg, #0e7b5c 0%, #065f46 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(6,95,70,0.10);
+}
+
+.tab-button.active i, .tab-button.active svg {
+    color: #fff;
+    stroke: #fff;
+}
+
+.tab-button:not(.active) {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.tab-button:not(.active) i, .tab-button:not(.active) svg {
+    color: #6b7280;
+    stroke: #6b7280;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Removed conflicting grid definition - using flex-based approach for consistency */
+
+.curso-link {
+    display: inline-block;
+    padding: 12px 28px;
+    margin: 0 24px 24px;
+    background-color: transparent;
+    color: var(--primary-color);
+    text-decoration: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.curso-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(7, 64, 63, 0.2);
+}
+
+.curso-link:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Estilo para el botón "Próximamente" */
+.curso-link.proximamente {
+    border-color: #9CA3AF;
+    color: #9CA3AF;
+    cursor: default;
+}
+
+.curso-link.proximamente:hover {
+    background-color: transparent;
+    transform: none;
+    box-shadow: none;
+}
+
+/* === Footer === */
+.footer {
+    background: radial-gradient(60% 120% at 50% 0%, #0e3a32 0%, #0b2b26 60%, #06201c 100%);
+    color: white;
+    padding: 60px 0 30px;
+    box-shadow: inset 0 20px 60px rgba(0,0,0,0.25);
+}
+
+.footer-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.footer-info h3,
+.footer-links h3,
+.footer-contact h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: rgb(52 211 153 / var(--tw-text-opacity, 1));
+}
+
+.footer-info p {
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+.footer-links ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links a {
+    color: white;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+}
+
+.footer-contact p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.8;
+}
+
+.footer-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin: 40px auto;
+    padding: 30px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 1000px;
+}
+
+.government-logo {
+    height: 50px;
+    filter: brightness(0) invert(1);
+}
+
+.partner-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.partner-logo:hover {
+    transform: scale(1.05);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 20px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* === Chatbot === */
+.chatbot-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.chatbot-bubble {
+    width: 70px;
+    height: 70px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+    transition: transform 0.3s ease;
+    animation: scaleIn 0.5s ease-out;
+}
+
+.chatbot-bubble:hover {
+    transform: scale(1.05);
+}
+
+.chatbot-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chatbot-icon-svg {
+    color: white;
+    width: 32px;
+    height: 32px;
+}
+
+.chatbot-panel {
+    position: absolute;
+    bottom: 85px;
+    right: 0;
+    width: 350px;
+    height: 460px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.chatbot-panel.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.chatbot-panel.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    z-index: 1500;
+}
+
+.chatbot-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+}
+
+.chatbot-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chatbot-header h3 {
+    font-size: 1.1rem;
+}
+
+.close-btn, .expand-btn, .file-upload-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.close-btn:hover, .expand-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatbot-messages {
+    flex: 1 1 auto;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Consistent, subtle scrollbars across sections */
+.chatbot-messages::-webkit-scrollbar,
+.tab-content::-webkit-scrollbar,
+.faq-slider::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.chatbot-messages::-webkit-scrollbar-track,
+.tab-content::-webkit-scrollbar-track,
+.faq-slider::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb,
+.tab-content::-webkit-scrollbar-thumb,
+.faq-slider::-webkit-scrollbar-thumb {
+    background-color: rgba(16, 185, 129, 0.35);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb:hover,
+.tab-content::-webkit-scrollbar-thumb:hover,
+.faq-slider::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(16, 185, 129, 0.55);
+}
+
+.message {
+    padding: 12px 16px;
+    border-radius: 18px;
+    max-width: 80%;
+    word-wrap: break-word;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.message.bot {
+    background-color: #f0f0f0;
+    align-self: flex-start;
+    border-bottom-left-radius: 5px;
+}
+
+.message.user {
+    background-color: var(--secondary-color);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
+}
+
+.message.loading {
+    background-color: #f0f0f0;
+    color: #666;
+    align-self: flex-start;
+    border-bottom-left-radius: 5px;
+    animation: pulse 1.5s infinite;
+}
+
+.message.error {
+    background-color: #ffeeee;
+    color: #d32f2f;
+    align-self: flex-start;
+    border-bottom-left-radius: 5px;
+}
+
+.message.file {
+    background-color: #e3f2fd;
+    color: #0277bd;
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.file-icon {
+    color: #0277bd;
+}
+
+.file-name {
+    font-weight: 500;
+    word-break: break-all;
+}
+
+.chatbot-input {
+    padding: 12px 15px;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid var(--border-color);
+    align-items: center;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    z-index: 2;
+}
+
+.input-actions {
+    display: flex;
+    align-items: center;
+}
+
+.file-upload-btn {
+    color: var(--text-light);
+    width: 36px;
+    height: 36px;
+    transition: color 0.2s;
+}
+
+.file-upload-btn:hover {
+    color: var(--highlight-color);
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.chatbot-input input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.chatbot-input input:focus {
+    border-color: var(--highlight-color);
+}
+
+.chatbot-input button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.chatbot-input button:hover {
+    background-color: rgb(13, 148, 103);
+}
+
+.suggested-questions {
+    padding: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.suggested-questions h4 {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: var(--text-light);
+}
+
+.question-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.question-chip {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.question-chip:hover {
+    background-color: #e0e0e0;
+}
+
+/* Styles for Suggested Questions */
+.suggested-questions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px;
+    align-items: flex-start;
+}
+
+.suggested-question-chip {
+    background-color: #E6F5F2; /* Light green background */
+    border: 1px solid #00A67C; /* Green border */
+    border-radius: 50px;
+    padding: 8px 15px;
+    font-size: 0.85rem; /* Slightly smaller font */
+    color: #007356; /* Dark green text */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    font-weight: 500;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.suggested-question-chip:hover {
+    width: 100%; /* Expand to fit content */
+    background-color: #00A67C; /* Green background on hover */
+    color: #FFFFFF; /* White text on hover */
+    border-color: #008C69;
+}
+
+.suggested-question-chip .question-number {
+    display: inline-block;
+    transition: opacity 0.2s ease;
+}
+
+.suggested-question-chip .question-full-text {
+    display: none;
+    padding-left: 8px; /* Space between number and text */
+}
+
+.suggested-question-chip:hover .question-number {
+    display: none; /* Hide number on hover */
+}
+
+.suggested-question-chip:hover .question-full-text {
+    display: inline-block; /* Show full text on hover */
+    white-space: normal; /* Allow text to wrap */
+}
+
+/* Keep default layout for chatbot to ensure input bar is always visible on first open */
+
+/* === Responsive Design === */
+@media (max-width: 1200px) {
+    .robot-image {
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero h1 {
+        font-size: 2.25rem;
+    }
+    
+    .hero-search-section h1 {
+        font-size: 2.25rem;
+        text-align: center;
+    }
+    
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px; /* Reduced from 20px */
+        justify-content: center; /* Center since hero-text is hidden */
+    }
+    
+    .hero-text {
+        display: none; /* Hide on all screen sizes */
+    }
+    
+    .hero-image {
+        justify-content: center;
+        order: 1;
+        margin-bottom: 8px; /* Reduced from 10px */
+        width: 100%;
+        flex: 1;
+    }
+    
+    .hero-search-section {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .robot-image {
+        max-height: 280px; /* Reduced from 300px */
+    }
+    
+    /* Responsive styles for Feature Buttons */
+    .feature-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .feature-button {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    /* Responsive styles for Capacitación section - flex-based */
+    .cursos-grid {
+        height: 474px; /* Consistent with main definition */
+    }
+    
+    .curso-card {
+        flex: 0 0 459px; /* Same width as desktop */
+        height: 434px; /* Same height as desktop for consistency */
+    }
+    
+    .tab-buttons {
+        width: 100%;
+        display: flex;
+    }
+    
+    .tab-button {
+        flex: 1;
+        text-align: center;
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    
+    /* Responsive styles for Search */
+    .search-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search-input, .search-button {
+        border-radius: 50px;
+        width: 100%;
+    }
+    
+    .footer-sections {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .mujeres-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .mujeres-banda-gobierno {
+        width: 12%; /* Slightly smaller on medium screens */
+    }
+}
+
+@media (min-width: 992px) {
+    .hero h1 {
+        font-size: 3.75rem;
+    }
+    
+    .hero-search-section h1 {
+        font-size: 3.75rem;
+        text-align: center; /* Keep centered on desktop */
+    }
+    
+    .hero-text {
+        display: none; /* Hide on desktop too since it's empty */
+    }
+    
+    .hero-image {
+        flex: 1; /* Take full width */
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 15px 0 30px 0; /* Further reduced padding */
+    }
+    
+    .hero h1 {
+        font-size: 1.875rem;
+    }
+    
+    .hero-search-section h1 {
+        font-size: 1.875rem;
+        text-align: center;
+    }
+    
+    .hero-search-section p {
+        font-size: 1rem; /* Smaller on mobile */
+        text-align: center;
+    }
+    
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px; /* Reduced from 30px */
+        justify-content: center;
+    }
+    
+    .hero-text {
+        display: none; /* Hide on mobile too */
+    }
+    
+    .hero-image {
+        order: 1;
+        width: 100%;
+        flex: 1;
+    }
+    
+    .hero-search-section {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 10px 0;
+    }
+    
+    .logo-container {
+        order: 1;
+    }
+    
+    .right-logos {
+        justify-content: center;
+        order: 2;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .logo {
+        height: 40px;
+    }
+    
+    .feature-card, .curso-card {
+        padding: 20px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .tab-button {
+        font-size: 13px;
+        padding: 10px;
+    }
+    
+    .footer-sections {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+    
+    .footer-info h3,
+    .footer-links h3,
+    .footer-contact h3 {
+        font-size: 1.2rem;
+    }
+    
+    .footer-info p {
+        font-size: 0.9rem;
+    }
+    
+    .footer-links a {
+        font-size: 0.9rem;
+        padding: 8px 0;
+    }
+    
+    .footer-logos {
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .partner-logo {
+        height: 35px;
+    }
+    
+    .chatbot-panel {
+        width: 320px;
+        right: 0;
+    }
+    
+    /* Responsive styles for How to Start */
+    .steps-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .robot-image {
+        max-height: 350px;
+    }
+    
+    .mujeres-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .mujeres-title {
+        font-size: 1.8rem;
+    }
+    
+    .mujeres-banda-gobierno {
+        width: 10%; /* Even smaller on mobile screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-description {
+        font-size: 1rem;
+    }
+    
+    .curso-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .chatbot-panel {
+        width: 300px;
+        right: -20px;
+    }
+    
+    .logo-container {
+        justify-content: center;
+    }
+    
+    /* Additional responsive styles */
+    .feature-content p {
+        font-size: 1rem;
+    }
+    
+    .footer-logos {
+        gap: 15px;
+    }
+    
+    .partner-logo {
+        height: 30px;
+    }
+    
+    .mujeres-banda-gobierno {
+        width: 8%; /* Minimal width on very small screens */
+    }
+}
+
+/* === Sección Cursos para Mujeres === */
+.mujeres-section {
+    padding: 80px 0;
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.mujeres-banda-gobierno {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 15%;
+    z-index: 1;
+    background-image: url('attached_assets/Banda de gobierno 3-4.png');
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+}
+
+.mujeres-banda-gobierno.left-banda {
+    left: 0;
+}
+
+.mujeres-banda-gobierno.right-banda {
+    right: 0;
+    transform: scaleX(-1); /* Mirror the image for the right side */
+}
+
+.mujeres-section-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #9b2242;
+    opacity: 0.07;
+    z-index: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 50% 50%, #9b2242 10%, transparent 10%),
+                      radial-gradient(circle at 100% 100%, #9b2242 10%, transparent 10%),
+                      radial-gradient(circle at 0% 0%, #9b2242 10%, transparent 10%),
+                      radial-gradient(circle at 100% 0%, #9b2242 10%, transparent 10%),
+                      radial-gradient(circle at 0% 100%, #9b2242 10%, transparent 10%),
+                      radial-gradient(circle at 25% 25%, #9b2242 5%, transparent 5%),
+                      radial-gradient(circle at 75% 75%, #9b2242 5%, transparent 5%),
+                      radial-gradient(circle at 25% 75%, #9b2242 5%, transparent 5%),
+                      radial-gradient(circle at 75% 25%, #9b2242 5%, transparent 5%);
+    background-size: 80px 80px;
+}
+
+.mujeres-section .container {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px; /* Reduced from the default 1200px to fit between the bands */
+}
+
+.mujeres-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 25px 30px;
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mujeres-title {
+    font-size: 2rem;
+    color: #9b2242;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.mujeres-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.mujeres-card {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mujeres-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.mujeres-card-content {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.mujeres-card-title {
+    font-size: 1.25rem;
+    color: #9b2242;
+    margin-bottom: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.mujeres-card-text {
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.mujeres-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #9b2242;
+    border: 1px solid #9b2242;
+    border-radius: 50px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    width: 100%;
+}
+
+.mujeres-button:hover {
+    background-color: #9b2242;
+    color: #fff;
+}
+
+@media (max-width: 992px) {
+    .mujeres-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .mujeres-banda-gobierno {
+        width: 12%; /* Slightly smaller on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .mujeres-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .mujeres-title {
+        font-size: 1.8rem;
+    }
+    
+    .mujeres-banda-gobierno {
+        width: 10%; /* Even smaller on mobile screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .mujeres-banda-gobierno {
+        width: 8%; /* Minimal width on very small screens */
+    }
+}
+
+/* Updated responsive styles for consistent flex approach */
+@media (max-width: 1460px) {
+    .cursos-grid {
+        height: 474px; /* Consistent with main definition */
+    }
+    
+    .curso-card {
+        flex: 0 0 400px; /* Slightly smaller */
+        height: 434px; /* Consistent height */
+    }
+}
+
+@media (max-width: 980px) {
+    .capacitacion {
+        padding: 30px 0 60px 0;
+    }
+    
+    .tab-buttons {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 16px;
+    }
+    
+    .tab-button {
+        padding: 12px 24px;
+        font-size: 1.2rem;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .cursos-grid {
+        height: 480px; /* Slightly increased for mobile readability */
+        padding: 16px 0;
+    }
+    
+    .curso-card {
+        flex: 0 0 340px; /* Mobile-optimized width */
+        height: 440px; /* Slightly increased height */
+        margin: 0 8px;
+    }
+    
+    .curso-banner {
+        height: 160px;
+    }
+}
+
+@media (max-width: 500px) {
+    .capacitacion {
+        padding: 20px 0 40px 0;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+        margin-bottom: 20px;
+    }
+    
+    .cursos-grid {
+        height: 500px; /* Consistent height even on mobile */
+        gap: 12px;
+        padding: 12px 0;
+    }
+    
+    .curso-card {
+        flex: 0 0 280px; /* Mobile card size */
+        height: 460px; /* Increased height for better content fit */
+        margin: 0 6px;
+        padding: 16px;
+    }
+    
+    .curso-banner {
+        height: 140px; /* Smaller banner for mobile */
+        border-radius: 8px;
+    }
+    
+    .curso-card h3 {
+        font-size: 1.1rem;
+        margin: 12px 0 8px 0;
+    }
+    
+    .curso-card p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        margin-bottom: 12px;
+    }
+    
+    .curso-link {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile container adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .hero {
+        overflow-x: hidden;
+        padding: 20px 0 40px 0;
+    }
+    
+    .hero .container {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .hero-content {
+        flex-direction: column;
+        gap: 30px;
+        text-align: center;
+    }
+    
+    .hero-search-section h1 {
+        font-size: 1.75rem;
+    }
+    
+    .hero-search-section p {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+    
+    .search-container {
+        flex-direction: column;
+        gap: 0;
+        max-width: 90%;
+    }
+    
+    .search-input {
+        padding: 12px 18px;
+        border-radius: 25px 25px 0 0;
+    }
+    
+    .search-button {
+        border-radius: 0 0 25px 25px;
+        padding: 12px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .hero {
+        padding: 15px 0 30px 0;
+    }
+    
+    .hero-search-section h1 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+    
+    .hero-search-section p {
+        font-size: 0.9rem;
+        padding: 0 15px;
+    }
+    
+    .search-container {
+        max-width: 95%;
+    }
+    
+    .search-input {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .search-button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .faq-slider-container {
+        max-width: 280px;
+        margin: 20px auto;
+    }
+    
+    .faq-card {
+        padding: 15px;
+    }
+    
+    .faq-card h3 {
+        font-size: 0.9rem;
+    }
+}
+
+/* Hero buttons responsive styles */
+@media (max-width: 768px) {
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+    }
+    
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 280px;
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-buttons .btn {
+        max-width: 100%;
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Hero text responsive adjustments */
+@media (max-width: 768px) {
+    .hero p {
+        font-size: 1rem;
+        max-width: 100%;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+    
+    .hero h1 {
+        line-height: 1.2;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.5rem;
+        padding: 0 5px;
+    }
+    
+    .hero p {
+        font-size: 0.9rem;
+        padding: 0 5px;
+    }
+}
+
+/* === Hero Buttons in Search Section === */
+/* Removed - buttons no longer exist */
+
+/* Adjust hero-text section since it's now empty */
+.hero-text {
+    display: none; /* Hide empty left section */
+}
+
+/* Make hero-image take full width since hero-text is hidden */
+.hero-image {
+    flex: 1;
+    width: 100%;
+}

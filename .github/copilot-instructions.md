@@ -51,3 +51,4 @@ The chatbot is a central feature.
 - The connection to the AI model is handled by `app/services/azure_openai.py`.
 
 When working on the chatbot, you will likely need to modify files across the frontend, routing, and service layers.
+python -m venv empleabot_envpython -m venv empleabot_env
