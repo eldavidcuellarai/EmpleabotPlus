@@ -12,8 +12,10 @@ def create_app():
     # Register blueprints
     from app.routes.chat import chat_bp
     from app.routes.health import health_bp
+    from app.routes.main import main_bp
     app.register_blueprint(chat_bp)
     app.register_blueprint(health_bp)
+    app.register_blueprint(main_bp)
 
     # Additional setup (CORS, security headers, etc.)
     if config.CORS_ENABLED:

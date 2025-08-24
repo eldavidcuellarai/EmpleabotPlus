@@ -83,7 +83,18 @@ class Config:
     def _validate_config(self):
         """Validate critical configuration"""
         if not self.LOCAL_DEV and not self.is_azure_configured():
-            raise ValueError("Azure OpenAI configuration is incomplete for production deployment")
+            # Don't crash the whole application on startup in hosted environments.
+            # Log a clear warning and fall back to LOCAL_DEV so diagnostics and
+            # health endpoints remain available. Production behavior still
+            # requires setting the Azure OpenAI environment variables.
+            logging.getLogger(__name__).warning(
+                "Azure OpenAI configuration is incomplete for production deployment. "
+                "Falling back to LOCAL_DEV mode so the app can start. "
+                "Set AZURE_OPENAI_KEY, AZURE_OPENAI_ENDPOINT, and "
+                "AZURE_OPENAI_ASSISTANT_ID in the App Service configuration to enable production mode."
+            )
+            # allow the app to start for diagnostics; callers can check is_azure_configured()
+            self.LOCAL_DEV = True
     
     def setup_logging(self):
         """Configure logging for Azure App Service"""
