@@ -1,14 +1,15 @@
 # EmpleabotPlus
 
-A modern Flask web application with integrated Azure OpenAI chatbot for employment assistance.
+A modern Flask web application with integrated OpenAI chatbot for employment assistance. Optimized for RunPod deployment.
 
 ## Features
 
-- 🤖 Azure OpenAI-powered employment chatbot
+- 🤖 OpenAI-powered employment chatbot
 - 📄 PDF CV analysis and processing
 - 🎨 Responsive web interface
 - 🔄 Session-based conversations
 - 🏥 Health monitoring endpoints
+- 🚀 RunPod deployment ready
 
 ## Project Structure
 
@@ -17,7 +18,7 @@ EmpleabotPlus/
 ├── app/                    # Main Flask application
 │   ├── config/            # Configuration
 │   ├── routes/            # API routes
-│   ├── services/          # Azure OpenAI integration
+│   ├── services/          # OpenAI integration
 │   ├── static/            # CSS, JS, images
 │   ├── templates/         # HTML templates
 │   └── utils/             # PDF processing
@@ -36,10 +37,10 @@ EmpleabotPlus/
 
 2. **Create `.env` file:**
    ```env
-   AZURE_OPENAI_KEY=your_key_here
-   AZURE_OPENAI_ENDPOINT=your_endpoint_here
-   AZURE_OPENAI_ASSISTANT_ID=your_assistant_id_here
-   FLASK_DEBUG=True
+   OPENAI_API_KEY=your_key_here
+   OPENAI_ASSISTANT_ID=your_assistant_id_here
+   SESSION_SECRET=your_secret_key
+   DEBUG=True
    ```
 
 3. **Run the application:**
@@ -47,44 +48,57 @@ EmpleabotPlus/
    python run.py
    ```
 
-4. **Access:** http://localhost:5000
+4. **Access:** http://localhost:8000
 
 ## Deployment
 
-### GitHub Secrets Setup
+### RunPod Deployment
 
-Before deploying, configure GitHub repository secrets for Azure deployment:
+This application is optimized for RunPod deployment:
 
-1. **Go to your GitHub repository**
-2. **Navigate to Settings** → **Secrets and variables** → **Actions**
-3. **Click "New repository secret"** and add:
+1. **Create RunPod Template:**
+   - Use Python 3.11+ base image
+   - Set container disk to at least 5GB
+   - Configure ports: expose port 8000
 
-**Azure Publish Profile:**
-- **Name:** `AZUREAPPSERVICE_PUBLISHPROFILE_915236A76C684F54A84128102148EFC3`
-- **Value:** Download publish profile from Azure App Service → Overview → "Get publish profile"
+2. **Environment Variables:**
+   Configure these in RunPod environment:
+   ```env
+   OPENAI_API_KEY=your_openai_api_key
+   OPENAI_ASSISTANT_ID=your_assistant_id
+   SESSION_SECRET=your_secure_secret
+   PORT=8000
+   DEBUG=false
+   ```
 
-**Environment Variables (Optional for GitHub Actions):**
-- **Name:** `AZURE_OPENAI_KEY` | **Value:** Your Azure OpenAI API key
-- **Name:** `AZURE_OPENAI_ENDPOINT` | **Value:** Your Azure OpenAI endpoint
-- **Name:** `AZURE_OPENAI_ASSISTANT_ID` | **Value:** Your assistant ID
+3. **Startup Command:**
+   ```bash
+   gunicorn --bind=0.0.0.0:8000 --workers=4 --timeout=120 run:app
+   ```
 
-> **Note:** Environment variables should be configured in Azure App Service settings rather than GitHub secrets for better security.
+### Alternative Deployment (Docker)
 
-### Azure App Service
-
-1. Create Azure Web App with Python 3.12 runtime
-2. Set startup command: `gunicorn --bind=0.0.0.0 --workers=4 run:app`
-3. Configure environment variables in Azure portal
-4. Deploy using GitHub Actions (workflow already configured)
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["gunicorn", "--bind=0.0.0.0:8000", "--workers=4", "run:app"]
+```
 
 ### Environment Variables
 
-| Variable | Description |
-|----------|-------------|
-| `AZURE_OPENAI_KEY` | Azure OpenAI API key |
-| `AZURE_OPENAI_ENDPOINT` | Azure OpenAI endpoint URL |
-| `AZURE_OPENAI_ASSISTANT_ID` | Assistant ID for chat |
-| `FLASK_DEBUG` | Debug mode (False for production) |
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `OPENAI_API_KEY` | OpenAI API key | ✅ |
+| `OPENAI_ASSISTANT_ID` | OpenAI Assistant ID for chat | ✅ |
+| `SESSION_SECRET` | Flask session secret key | ✅ |
+| `PORT` | Application port (default: 8000) | ❌ |
+| `DEBUG` | Debug mode (false for production) | ❌ |
+| `WORKERS` | Number of Gunicorn workers (default: 4) | ❌ |
+| `CORS_ENABLED` | Enable CORS (default: false) | ❌ |
 
 ## License
 

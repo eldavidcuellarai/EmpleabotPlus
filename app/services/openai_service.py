@@ -3,7 +3,7 @@ from flask import current_app, session
 from openai import AzureOpenAI
 import json
 
-def get_azure_client():
+def get_openai_client():
     config = current_app.config
     if config.get('AZURE_OPENAI_KEY') and config.get('AZURE_OPENAI_ENDPOINT') and config.get('AZURE_OPENAI_ASSISTANT_ID'):
         return AzureOpenAI(
@@ -15,7 +15,7 @@ def get_azure_client():
 
 def get_or_create_thread():
     thread_id = session.get('thread_id')
-    client = get_azure_client()
+    client = get_openai_client()
     if not thread_id and client:
         thread = client.beta.threads.create()
         session['thread_id'] = thread.id
@@ -24,7 +24,7 @@ def get_or_create_thread():
 
 def process_user_message(user_message, session):
     config = current_app.config
-    client = get_azure_client()
+    client = get_openai_client()
     if not client:
         # Simulated response for local dev
         sample_html = ("<!doctype html><html><head><meta charset='utf-8'><title>CV</title>"

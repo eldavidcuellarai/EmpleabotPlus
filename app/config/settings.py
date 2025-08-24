@@ -5,7 +5,7 @@ from typing import Optional
 from dotenv import load_dotenv
 
 class Config:
-    """Base configuration class with Azure App Service optimizations"""
+    """Base configuration class for RunPod deployment"""
     
     def __init__(self):
         # Load environment variables
@@ -17,19 +17,12 @@ class Config:
         self.DEBUG = self._get_bool_env("DEBUG", False)
         
         # Azure OpenAI Configuration
-        self.AZURE_OPENAI_KEY = self._first_nonempty(
-            os.getenv("AZURE_OPENAI_KEY"),
-            os.getenv("AZURE_OPENAI_API_KEY"),
-            os.getenv("OPENAI_API_KEY"),
-        )
-        self.AZURE_OPENAI_ENDPOINT = self._first_nonempty(
-            os.getenv("AZURE_OPENAI_ENDPOINT"),
-            os.getenv("OPENAI_API_BASE"),
-        )
+        self.AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
+        self.AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
         self.AZURE_OPENAI_ASSISTANT_ID = os.getenv("AZURE_OPENAI_ASSISTANT_ID")
         self.AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")
         
-        # App Service Configuration
+        # RunPod Configuration
         self.PORT = int(os.getenv("PORT", 8000))
         self.HOST = os.getenv("HOST", "0.0.0.0")
         self.WORKERS = int(os.getenv("WORKERS", 4))
@@ -41,14 +34,13 @@ class Config:
         
         # Logging Configuration
         self.LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
-        self.AZURE_INSIGHTS_KEY = os.getenv("APPINSIGHTS_INSTRUMENTATIONKEY")
         
         # Security Configuration
         self.SECURE_HEADERS = self._get_bool_env("SECURE_HEADERS", True)
         self.CORS_ENABLED = self._get_bool_env("CORS_ENABLED", False)
         
         # Feature Flags
-        self.LOCAL_DEV = self._get_bool_env("LOCAL_DEV", not self.is_azure_configured())
+        self.LOCAL_DEV = self._get_bool_env("LOCAL_DEV", not self.is_openai_configured())
         
         # Validate required configuration
         self._validate_config()
@@ -72,7 +64,7 @@ class Config:
                 return str(v).strip()
         return None
     
-    def is_azure_configured(self) -> bool:
+    def is_openai_configured(self) -> bool:
         """Check if Azure OpenAI is properly configured"""
         return all([
             self.AZURE_OPENAI_KEY,
@@ -82,36 +74,34 @@ class Config:
     
     def _validate_config(self):
         """Validate critical configuration"""
-        if not self.LOCAL_DEV and not self.is_azure_configured():
+        if not self.LOCAL_DEV and not self.is_openai_configured():
             # Don't crash the whole application on startup in hosted environments.
             # Log a clear warning and fall back to LOCAL_DEV so diagnostics and
             # health endpoints remain available. Production behavior still
-            # requires setting the Azure OpenAI environment variables.
+            # requires setting the OpenAI environment variables.
             logging.getLogger(__name__).warning(
                 "Azure OpenAI configuration is incomplete for production deployment. "
                 "Falling back to LOCAL_DEV mode so the app can start. "
-                "Set AZURE_OPENAI_KEY, AZURE_OPENAI_ENDPOINT, and "
-                "AZURE_OPENAI_ASSISTANT_ID in the App Service configuration to enable production mode."
+                "Set AZURE_OPENAI_KEY, AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_ASSISTANT_ID to enable production mode."
             )
-            # allow the app to start for diagnostics; callers can check is_azure_configured()
+            # allow the app to start for diagnostics; callers can check is_openai_configured()
             self.LOCAL_DEV = True
     
     def setup_logging(self):
-        """Configure logging for Azure App Service"""
+        """Configure logging for RunPod deployment"""
         log_format = '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
         
         logging.basicConfig(
             level=getattr(logging, self.LOG_LEVEL),
             format=log_format,
             handlers=[
-                logging.StreamHandler(),  # For Azure App Service logs
+                logging.StreamHandler(),  # For RunPod logs
             ]
         )
         
         # Disable noisy loggers
         logging.getLogger('urllib3').setLevel(logging.WARNING)
         logging.getLogger('requests').setLevel(logging.WARNING)
-        logging.getLogger('azure').setLevel(logging.WARNING)
         
         return logging.getLogger(__name__)
     
@@ -135,7 +125,7 @@ class DevelopmentConfig(Config):
         self.LOCAL_DEV = True
 
 class ProductionConfig(Config):
-    """Production configuration for Azure App Service"""
+    """Production configuration for RunPod deployment"""
     
     def __init__(self):
         super().__init__()

@@ -19,11 +19,18 @@ def create_app():
 
     # Additional setup (CORS, security headers, etc.)
     if config.CORS_ENABLED:
-        from flask_cors import CORS
-        CORS(app, resources={r"/*": config.get_cors_config()})
+        try:
+            from flask_cors import CORS
+            CORS(app, resources={r"/*": config.get_cors_config()})
+        except Exception:
+            # Optional dependency missing — log and continue so the app can start
+            logging.getLogger(__name__).warning('flask_cors not available; skipping CORS setup')
 
     if config.SECURE_HEADERS:
-        from flask_talisman import Talisman
-        Talisman(app)
+        try:
+            from flask_talisman import Talisman
+            Talisman(app)
+        except Exception:
+            logging.getLogger(__name__).warning('flask_talisman not available; skipping secure headers')
 
     return app

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session, current_app
-from app.services.azure_openai import get_or_create_thread, process_user_message
+from app.services.openai_service import get_or_create_thread, process_user_message
 from werkzeug.utils import secure_filename
 from app.utils.pdf_processor import extract_text_from_pdf
 import os
