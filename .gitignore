@@ -30,14 +30,39 @@ var/
 venv/
 ENV/
 antenv/
-
+empleabot_env/
 
 # Archivos temporales
 /tmp/
 *.tmp
 *.log
+logs/
 
 # Archivos de sistema
 .DS_Store
 Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Flask
+instance/
+.webassets-cache
+
+# Uploads
+uploads/
+*.pdf
+
+# Azure
+.azure/
+
+# Test files
 azure_test.py

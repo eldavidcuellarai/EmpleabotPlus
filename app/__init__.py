@@ -5,7 +5,7 @@ import os
 
 def create_app():
     config = get_config()
-    app = Flask(__name__, static_folder=os.path.abspath('static'), template_folder=os.path.abspath('templates'))
+    app = Flask(__name__, static_folder='static', template_folder='templates')
     app.config.from_object(config)
     config.setup_logging()
 
